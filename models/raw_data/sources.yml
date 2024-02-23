@@ -1,0 +1,107 @@
+
+version: 2
+
+sources:
+  - name: util_table_data
+    database: |
+      {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
+      {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
+      {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
+      {%- elif target.name=="test" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- else -%} invalid_database
+      {%- endif -%}    
+    schema: 
+      UTIL
+    tables:
+      - name: EXECUTION_LOG
+      - name: MESSAGE_LOG
+      - name: SQL_LOGS
+      - name: TASK_LOG    
+
+  - name: dl_table_data
+    database: |
+      {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
+      {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
+      {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
+      {%- elif target.name=="test" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- else -%} invalid_database
+      {%- endif -%}    
+    schema:
+      DL
+    tables:
+      - name: ACTION_TIMES_RAW
+      - name: CASES_RAW
+      - name: FIXTURES_RAW
+      - name: FORMS_RAW       
+      - name: LOCATIONS_RAW
+      - name: WEB_USERS_RAW  
+
+  - name: dm_table_data
+    database: |
+      {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
+      {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
+      {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
+      {%- elif target.name=="test" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- else -%} invalid_database
+      {%- endif -%}    
+    schema:
+      DM
+    tables:
+      - name: ACTION_TIME
+      - name: CASE_ALIAS
+      - name: CASE_CLIENT
+      - name: CASE_CLINIC
+      - name: CASE_COMMCARE_USER
+      - name: CASE_PROVIDER
+      - name: CASE_REFERRAL
+      - name: CASE_SERVICE
+      - name: CASE_UNIT
+      - name: LOCATION
+      - name: WEB_USER
+
+  - name: integration_table_data
+    database: |
+      {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
+      {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
+      {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
+      {%- elif target.name=="test" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- else -%} invalid_database
+      {%- endif -%}    
+    schema:
+      INTEGRATION
+    tables:
+      - name: CONFIG_ACTION_TIME_FIELDS
+      - name: CONFIG_CASE_FIELDS
+      - name: CONFIG_FIXTURE_FIELDS
+      - name: CONFIG_FORM_FIELDS
+      - name: CONFIG_LOCATION_FIELDS
+      - name: CONFIG_WEB_USER_FIELDS   
+        
+  - name: dl_schema_table_data
+    database: |
+      {%- if target.name=="dev" or target.name=="dev-dl" -%} DATALAKE_DEV
+      {%- elif target.name=="qa" or target.name=="qa-dl" -%} DATALAKE_QA
+      {%- elif target.name=="prod" or target.name=="prod-dl" -%} DATALAKE_PROD
+      {%- elif target.name=="test" or target.name=="test-dl" -%} DATALAKE_DEV
+      {%- else -%} invalid_database
+      {%- endif -%}    
+    schema: |
+      {%- if target.name=="dev" or target.name=="dev-dl" -%} CO_CARE_COORDINATION_COMMCARE_DEV
+      {%- elif target.name=="qa" or target.name=="qa-dl" -%} CO_CARE_COORDINATION_COMMCARE_UAT
+      {%- elif target.name=="prod" or target.name=="prod-dl" -%} CO_CARE_COORDINATION_COMMCARE_PROD
+      {%- elif target.name=="test" or target.name=="test-dl" -%} BHA_LOCATION_REDESIGN_1
+      {%- else -%} invalid_schema
+      {%- endif -%}
+    tables:
+      - name: ACTION_TIMES_RAW
+      - name: CASES_RAW
+      - name: FIXTURES_RAW
+      - name: FORMS_RAW
+      - name: LOCATIONS_RAW
+      - name: WEB_USERS_RAW   
+      - name: ACTION_TIMES_RAW_STAGE
+      - name: CASES_RAW_STAGE
+      - name: FIXTURES_RAW_STAGE
+      - name: FORMS_RAW_STAGE
+      - name: LOCATIONS_RAW_STAGE
+      - name: WEB_USERS_RAW_STAGE              

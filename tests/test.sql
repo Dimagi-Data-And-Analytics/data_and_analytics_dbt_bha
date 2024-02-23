@@ -1,0 +1,1 @@
+select form_id from {{ ref('VW_FORM_METADATA')}} where form_id is null

@@ -1,0 +1,24 @@
+note - 
+
+1. 
+when doing intial setup, follow the sql execution orders in MAIN-SCRIPT-DEV
+
+2. 
+when doing intial setup, if any views fail due to some views do not exist yet in Snowflake
+    example is RC_UPDATE_CASE_DELETIONS_ALL.sql - INTEGRATION.SRC_FORMS_RAW or GENERATE_ALL_VIEWS.sql
+    perform dbt run again, the needed view (INTEGRATION.SRC_FORMS_RAW0) should be gernated in Snowflake from the first dbt run
+ 
+
+2. 
+when testing with dbt show
+example -> dbt show -s CASE_FIELD_VALUES_STG --target dev 
+
+Runtime Error
+  Database Error in model SRC_UPDATE_CASE_DELETIONS_STAGE (models/DM_DB/INTEGRATION/Views/SRC_UPDATE_CASE_DELETIONS_STAGE.sql)
+    002003 (42S02): SQL compilation error:
+    Object 'SRC_FORMS_RAW_STAGE' does not exist or not authorized.
+
+temporary add INTEGRATION schema into the view and run show again
+    FROM 
+        INTEGRATION.SRC_CASES_RAW_STAGE, 
+

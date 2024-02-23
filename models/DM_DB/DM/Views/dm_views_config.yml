@@ -1,0 +1,7 @@
+models:
+  - name: VW_FORM_METADATA
+    columns:
+    - name: FORM_ID
+      tests:
+      - unique
+      - not_null
