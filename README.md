@@ -5,6 +5,7 @@ Welcome to your new dbt project!
 Try running the following commands:
 - dbt run
 - dbt test
+- dbt show -s module_name --target target_name
 
 
 ### Resources:

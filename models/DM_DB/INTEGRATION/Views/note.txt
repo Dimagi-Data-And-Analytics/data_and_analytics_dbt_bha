@@ -1,6 +1,6 @@
 note - 
 
-1. 
+1.  
 when doing intial setup, follow the sql execution orders in MAIN-SCRIPT-DEV
 
 2. 
