@@ -1,4 +1,4 @@
-with 
+with  
 util_table_data_execution as (
       select * from  {{ source('util_table_data', 'EXECUTION_LOG') }}
 ), 
