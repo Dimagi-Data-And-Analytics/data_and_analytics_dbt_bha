@@ -3,9 +3,12 @@ Welcome to your new dbt project!
 ### Using the starter project
 
 Try running the following commands:
+- dbt list
+  - dbt list --models "DM_DB.*" --target dev
 - dbt run
 - dbt test
-- dbt show -s module_name --target target_name
+- dbt show
+  - dbt show -s module_name --target dev
 
 
 ### Resources:
