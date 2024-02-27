@@ -6,6 +6,8 @@ Try running the following commands:
 - dbt list
   - dbt list --models "DM_DB.*" --target dev
 - dbt run
+  - the following is currently enabled in Github Action only
+  - dbt run --models "DM_DB.*" --target dev
 - dbt test
 - dbt show
   - dbt show -s module_name --target dev
