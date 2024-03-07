@@ -1,4 +1,4 @@
-name: schedule_dbt_job_bha_dev_dm_only
+name: schedule_dbt_job_bha_dev_datalake
 run-name: manual trigger from GitHub Actions to Snowflake
 on: workflow_dispatch
 env:
@@ -7,7 +7,7 @@ env:
   DBT_SNOWFLAKE_USER_BHA: ${{ secrets.DBT_SNOWFLAKE_USER_BHA }}
   DBT_SNOWFLAKE_PWD_BHA: ${{ secrets.DBT_SNOWFLAKE_PWD_BHA }}
 jobs:
-  schedule_dbt_job_bha_dev:
+  schedule_dbt_job_bha_dev_datalake:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -19,6 +19,6 @@ jobs:
           pip install dbt-snowflake
           dbt deps    
       - name: Run dbt models
-        run: dbt run --models "DM_DB.DM.*" --target dev
+        run: dbt run --models "DATALAKE_DB.*" --target dev-dl
       - name: Test dbt models
-        run: dbt test --models "DM_DB.DM.*" --target dev
+        run: dbt test --models "DATALAKE_DB.*" --target dev-dl
