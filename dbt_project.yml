@@ -44,13 +44,41 @@ models:
           - "{{ create_decimal_to_ts() }}"       
           - "{{ create_phone_display() }}"       
         Views:
+          VW_ARCHIVED_CASES:
+            secure: true 
+          VW_CLIENT_ALIAS:
+            secure: true 
+          VW_CLIENT_DUPLICATES:
+            secure: true 
+          VW_CLIENT_DUPLICATES_INCREMENTAL:
+            secure: true 
+          VW_CLINIC_PROVIDER:
+            secure: true 
+          VW_EXPLODE_CLINIC_ACCESSIBILITY:
+            secure: true 
+          VW_EXPLODE_CLINIC_CLINIC_TYPE:
+            secure: true 
+          VW_EXPLODE_CLINIC_LANGUAGES_SPOKEN:
+            secure: true 
+          VW_EXPLODE_CLINIC_MENTAL_HEALTH_SERVICES:
+            secure: true 
+          VW_EXPLODE_CLINIC_PAYERS_ACCEPTED:
+            secure: true 
+          VW_EXPLODE_CLINIC_POPULATION_SERVED:
+            secure: true 
+          VW_EXPLODE_CLINIC_PROGRAMS:
+            secure: true 
+          VW_EXPLODE_CLINIC_SUBSTANCE_USE_SERVICES:
+            secure: true 
+          VW_EXPLODE_SERVICE_TREATMENT_TYPE:
+            secure: true 
           VW_FORM_METADATA:
             secure: true 
+          VW_SERVICE_CLINIC_PROVIDER_CLIENT:
+            secure: true
           VW_TABLEAU_CLINIC_FILTER:
             secure: true
           VW_TABLEAU_DEDUPE_FILTER:
-            secure: true
-          VW_EXPLODE_SERVICE_TREATMENT_TYPE:
             secure: true
       INTEGRATION:
         +schema: INTEGRATION   
