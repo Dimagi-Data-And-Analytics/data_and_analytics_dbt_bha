@@ -7,7 +7,8 @@ sources:
       {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
       {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
       {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
-      {%- elif target.name=="test" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test-location" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- else -%} invalid_database
       {%- endif -%}    
     schema: 
@@ -23,7 +24,8 @@ sources:
       {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
       {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
       {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
-      {%- elif target.name=="test" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test-location" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -41,7 +43,8 @@ sources:
       {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
       {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
       {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
-      {%- elif target.name=="test" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test-location" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -64,7 +67,8 @@ sources:
       {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
       {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
       {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
-      {%- elif target.name=="test" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test-location" -%} DM_BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -82,6 +86,7 @@ sources:
       {%- if target.name=="dev" or target.name=="dev-dl" -%} DATALAKE_DEV
       {%- elif target.name=="qa" or target.name=="qa-dl" -%} DATALAKE_QA
       {%- elif target.name=="prod" or target.name=="prod-dl" -%} DATALAKE_PROD
+      {%- elif target.name=="test-location" or target.name=="test-location-dl" -%} DATALAKE_DEV
       {%- elif target.name=="test" or target.name=="test-dl" -%} DATALAKE_DEV
       {%- else -%} invalid_database
       {%- endif -%}    
@@ -89,7 +94,8 @@ sources:
       {%- if target.name=="dev" or target.name=="dev-dl" -%} CO_CARE_COORDINATION_COMMCARE_DEV
       {%- elif target.name=="qa" or target.name=="qa-dl" -%} CO_CARE_COORDINATION_COMMCARE_UAT
       {%- elif target.name=="prod" or target.name=="prod-dl" -%} CO_CARE_COORDINATION_COMMCARE_PROD
-      {%- elif target.name=="test" or target.name=="test-dl" -%} BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test-location" or target.name=="test-location-dl" -%} BHA_LOCATION_REDESIGN_1
+      {%- elif target.name=="test" or target.name=="test-dl" -%} CO_CARE_COORDINATION_COMMCARE_TEST
       {%- else -%} invalid_schema
       {%- endif -%}
     tables:
