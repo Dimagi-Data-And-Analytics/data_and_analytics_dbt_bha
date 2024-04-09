@@ -34,22 +34,22 @@ data_and_analytics_dbt_bha:
     test-location:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DM_BHA_LOCATION_REDESIGN_1
-      password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
       schema: DM
       threads: 1
       type: snowflake
-      user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
       warehouse: COMPUTE_WH      
     test:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DM_CO_CARE_COORD_TEST
-      password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
       schema: DM
       threads: 1
       type: snowflake
-      user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
       warehouse: COMPUTE_WH      
     dev-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -84,21 +84,21 @@ data_and_analytics_dbt_bha:
     test-location-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DATALAKE_DEV
-      password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
       schema: BHA_LOCATION_REDESIGN_1
       threads: 1
       type: snowflake
-      user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
       warehouse: COMPUTE_WH  
     test-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DATALAKE_DEV
-      password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
       schema: CO_CARE_COORDINATION_COMMCARE_TEST
       threads: 1
       type: snowflake
-      user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
       warehouse: COMPUTE_WH               
 
