@@ -3,7 +3,10 @@ with qrys as (
     union
     select 2 as ord, 'fixture' source, fixture_type source_type, sql_text from generate_fixture_table_incr_load
     union
-    select 3 as ord, 'location' source, null source_type, sql_text from generate_location_table_incr_load
+    --below will recreate location table entirely from location_raw, speial need for bha location redesign projet
+    select 3 as ord, 'location' source, null source_type, sql_text from generate_location_tables
+    --below will do merge changes from location_raw
+    --select 3 as ord, 'location' source, null source_type, sql_text from generate_location_table_incr_load
     union
     select 4 as ord, 'web-user' source, null source_type, sql_text from generate_web_user_table_incr_load
     union
