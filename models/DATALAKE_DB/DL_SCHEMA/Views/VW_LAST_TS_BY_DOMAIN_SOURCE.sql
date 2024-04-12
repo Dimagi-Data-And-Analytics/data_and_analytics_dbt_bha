@@ -29,7 +29,7 @@ d as (select domain from dl_schema_table_data_fixtures union select domain from 
         from (values 
             ('case', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -1), '.json')$$, $$s.$1:objects$$), 
             ('form', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -1), '.json')$$, $$s.$1:objects$$), 
-            ('location', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -2), '.json')$$, $$s.$1:objects$$), 
+            ('location', $$s.$1:meta$$, $$f.value$$, $$f.value:location_id::string$$, $$replace(split_part(metadata_filename, '_', -2), '.json')$$, $$s.$1:objects$$), 
             ('fixture', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -2), '.json')$$, $$s.$1:objects$$), 
             ('web-user', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -2), '.json')$$, $$s.$1:objects$$), 
             ('action_times', $$s.$1:meta$$, $$f.value$$, $$coalesce(f.value:user_id::string, f.value:user::string) || '_' || f.value:UTC_start_time::string$$, 

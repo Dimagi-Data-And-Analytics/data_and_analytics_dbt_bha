@@ -8,8 +8,10 @@ when doing intial setup, if any views fail due to some views do not exist yet in
     example is RC_UPDATE_CASE_DELETIONS_ALL.sql - INTEGRATION.SRC_FORMS_RAW or GENERATE_ALL_VIEWS.sql
     perform dbt run again, the needed view (INTEGRATION.SRC_FORMS_RAW0) should be gernated in Snowflake from the first dbt run
  
+3. in view GENERATE_ALL_TABLES_INCR_LOAD, choose the need for the location
+   generate_location_tables or generate_location_table_incr_load
 
-2. 
+4. 
 when testing with dbt show
 example -> dbt show -s CASE_FIELD_VALUES_STG --target dev 
 
