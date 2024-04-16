@@ -5,7 +5,7 @@ data_and_analytics_dbt_bha:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DM_CO_CARE_COORD_DEV
       password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      role: "{{ env_var('DBT_SNOWFLAKE_ROLE') }}"
       schema: DM
       threads: 1
       type: snowflake
@@ -15,7 +15,7 @@ data_and_analytics_dbt_bha:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DM_CO_CARE_COORD_QA
       password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      role: "{{ env_var('DBT_SNOWFLAKE_ROLE') }}"
       schema: DM
       threads: 1
       type: snowflake
@@ -25,7 +25,7 @@ data_and_analytics_dbt_bha:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DM_CO_CARE_COORD_PROD
       password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      role: "{{ env_var('DBT_SNOWFLAKE_ROLE') }}"
       schema: DM
       threads: 1
       type: snowflake
@@ -55,7 +55,7 @@ data_and_analytics_dbt_bha:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DATALAKE_DEV
       password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      role: "{{ env_var('DBT_SNOWFLAKE_ROLE') }}"
       schema: CO_CARE_COORDINATION_COMMCARE_DEV
       threads: 1
       type: snowflake
@@ -65,7 +65,7 @@ data_and_analytics_dbt_bha:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DATALAKE_QA
       password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      role: "{{ env_var('DBT_SNOWFLAKE_ROLE') }}"
       schema: CO_CARE_COORDINATION_COMMCARE_UAT
       threads: 1
       type: snowflake
@@ -75,7 +75,7 @@ data_and_analytics_dbt_bha:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DATALAKE_PROD
       password: "{{ env_var('DBT_SNOWFLAKE_PWD_BHA') }}"
-      role: SYSADMIN
+      role: "{{ env_var('DBT_SNOWFLAKE_ROLE') }}"
       schema: CO_CARE_COORDINATION_COMMCARE_PROD
       threads: 1
       type: snowflake
