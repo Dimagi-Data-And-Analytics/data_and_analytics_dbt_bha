@@ -28,9 +28,9 @@ recent_user as
 user_clinic as
     (
         select ccu.email, tuf.username, 
-        case when ccu.clinic_case_ids is null and statewide_user = TRUE
-        then (select listagg(distinct(CASE_ID), ' ') as all_clinics from dm_table_data_clinic)
-        else ccu.clinic_case_ids
+        case when ccu.commcare_location_ids is null and statewide_user = TRUE
+            then (select listagg(distinct(CASE_ID), ' ') as all_clinics from dm_table_data_clinic)
+            else ccu.commcare_location_ids
         end as clinic_list from dm_table_data_commcare_user ccu inner join recent_user rc on ccu.email = rc.email and ccu.date_opened = rc.max_date
         inner join tableau_users_fixture tuf on upper(tuf.email) = upper(ccu.email)
     ),

@@ -24,7 +24,7 @@ user_access as(
 
 
 select ccu.email, tuf.username, 
-case when ccu.clinic_case_ids is null
+case when ccu.commcare_location_ids is null
 then ('All') 
 else ('None')
 end as security_access from dm_table_data_commcare_user ccu inner join recent_user rc on ccu.email = rc.email and ccu.date_opened = rc.max_date
