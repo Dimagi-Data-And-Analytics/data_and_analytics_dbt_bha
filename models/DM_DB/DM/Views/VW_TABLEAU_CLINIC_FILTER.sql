@@ -27,25 +27,30 @@ recent_user as
 
 user_clinic as
     (
-        select ccu.email, tuf.username, 
+        select 
+        ccu.email, 
+        tuf.username,
         case when ccu.commcare_location_ids is null and statewide_user = TRUE
-            then (select listagg(distinct(CASE_ID), ' ') as all_clinics from dm_table_data_clinic)
+            then (select listagg(distinct(owner_id), ' ') as all_clinics from dm_table_data_clinic)
             else ccu.commcare_location_ids
-        end as clinic_list from dm_table_data_commcare_user ccu inner join recent_user rc on ccu.email = rc.email and ccu.date_opened = rc.max_date
-        inner join tableau_users_fixture tuf on upper(tuf.email) = upper(ccu.email)
+        end as location_list 
+        
+        from dm_table_data_commcare_user ccu inner join recent_user rc on ccu.email = rc.email and ccu.date_opened = rc.max_date
+        inner join tableau_users_fixture tuf on upper(tuf.email) = upper(ccu.email)     
     ),
 
-final as (
+flat_list as (
 select 
     email,
     username,
-   replace(a.value::string, '_', ' ') as clinic_list
+   replace(a.value::string, '_', ' ') as location_id
     
-from user_clinic, lateral flatten(input=> split(clinic_list, ' ')) a
+from user_clinic, lateral flatten(input=> split(location_list, ' ')) a
 )
 
 select 
-	EMAIL,
-	USERNAME,
-	CLINIC_LIST
-from final
+	email,
+	username,
+--	location_id,
+    case_clinic.case_id as clinic_list
+from flat_list inner join case_clinic on flat_list.location_id = case_clinic.owner_id
