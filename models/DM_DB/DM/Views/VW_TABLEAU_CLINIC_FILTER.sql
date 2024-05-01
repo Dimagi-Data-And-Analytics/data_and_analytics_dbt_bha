@@ -11,6 +11,14 @@ dm_table_data_commcare_user as (
       select * from  {{ source('dm_table_data', 'CASE_CLINIC') }}
 ), 
 
+state_user as (
+
+    select ccu.case_id,  ccu.email, ccu.date_opened, location_id, location_type_name, location_type_code  
+    from dm_table_data_commcare_user ccu left join location l on ccu.commcare_location_ids = l.id 
+    where ccu.statewide_user = TRUE
+
+), 
+
 tableau_users_fixture as 
 (
 
@@ -30,13 +38,13 @@ user_clinic as
         select 
         ccu.email, 
         tuf.username,
-        case when ccu.commcare_location_ids is null and statewide_user = TRUE
+        case when su.location_type_code = 'state' and statewide_user = TRUE
             then (select listagg(distinct(owner_id), ' ') as all_clinics from dm_table_data_clinic)
             else ccu.commcare_location_ids
         end as location_list 
         
         from dm_table_data_commcare_user ccu inner join recent_user rc on ccu.email = rc.email and ccu.date_opened = rc.max_date
-        inner join tableau_users_fixture tuf on upper(tuf.email) = upper(ccu.email)     
+        inner join tableau_users_fixture tuf on upper(tuf.email) = upper(ccu.email) left join state_user su on su.case_id = ccu.case_id and su.date_opened = rc.max_date
     ),
 
 flat_list as (
