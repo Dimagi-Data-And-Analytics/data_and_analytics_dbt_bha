@@ -121,4 +121,3 @@ data_and_analytics_dbt_bha:
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
       warehouse: COMPUTE_WH               
-
