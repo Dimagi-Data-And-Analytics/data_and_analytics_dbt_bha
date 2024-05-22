@@ -3,9 +3,41 @@
 use role sysadmin;
 use database DATALAKE_DEV;
 
-create or replace schema ETL_REPLACE_TEST_BHA_DEV;
+create schema IF NOT EXISTS CO_CARE_COORDINATION_COMMCARE_PERF;
 
-use schema ETL_REPLACE_TEST_BHA_DEV;
+use schema CO_CARE_COORDINATION_COMMCARE_PERF;
+
+use role securityadmin;
+grant select on future tables in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role DATALAKE_DEV_R;
+grant select on future views in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role DATALAKE_DEV_R;
+
+-- if testing project --
+use role securityadmin;
+grant select on future tables in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role DATALAKE_RW;
+grant select on future views in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role DATALAKE_RW;
+-- for role datalake_test_rw
+grant usage on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant create function on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant create stage on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant create task on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant create file format on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant create table on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant create view on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant delete on future tables in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant delete on future views in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant insert on future tables in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant insert on future views in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant select on future tables in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant select on future views in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant truncate on future tables in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant truncate on future views in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant update on future tables in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant update on future views in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+
+use role user_dbt_test;
+-- end if testing project --
+
+use schema CO_CARE_COORDINATION_COMMCARE_PERF;
 
 create or replace TABLE CASES_RAW (
 	DOMAIN VARCHAR(16777216),
@@ -154,11 +186,13 @@ create or replace TABLE ACTION_TIMES_RAW_STAGE (
 	primary key (ID)
 );
 
+use role sysadmin;
+
 CREATE OR REPLACE file format json_file_format
 	type=JSON TIME_FORMAT=AUTO;
 
 CREATE OR REPLACE STAGE s3_json_stage
-    url='s3://commcare-snowflake-data-sync/co-carecoordination-dev/snowflake-copy/'
+    url='s3://commcare-snowflake-data-sync/co-carecoordination-perf/snowflake-copy/'
     Storage_integration = s3_int_obj
     file_format = json_file_format;
 
@@ -170,7 +204,7 @@ with d as (select domain from FIXTURES_RAW union select domain from CASES_RAW un
         from (values 
             ('case', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -1), '.json')$$, $$s.$1:objects$$), 
             ('form', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -1), '.json')$$, $$s.$1:objects$$), 
-            ('location', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -2), '.json')$$, $$s.$1:objects$$), 
+            ('location', $$s.$1:meta$$, $$f.value$$, $$f.value:location_id::string$$, $$replace(split_part(metadata_filename, '_', -2), '.json')$$, $$s.$1:objects$$), 
             ('fixture', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -2), '.json')$$, $$s.$1:objects$$), 
             ('web-user', $$s.$1:meta$$, $$f.value$$, $$f.value:id::string$$, $$replace(split_part(metadata_filename, '_', -2), '.json')$$, $$s.$1:objects$$), 
             ('action_times', $$s.$1:meta$$, $$f.value$$, $$coalesce(f.value:user_id::string, f.value:user::string) || '_' || f.value:UTC_start_time::string$$, 
@@ -218,17 +252,136 @@ left join ts on ts.source = src.source
 */
 
 ////// setup project in datamart //////
+use role sysadmin;
 
-create or replace database DM_ETL_REPLACE_TEST_BHA_DEV;
-use database DM_ETL_REPLACE_TEST_BHA_DEV;
-create or replace schema DL;
-create or replace  schema DM;
-create or replace  schema INTEGRATION;
-create or replace  schema UTIL;
+create database IF NOT EXISTS DM_CO_CARE_COORD_PERF;
+use database DM_CO_CARE_COORD_PERF;
+
+grant usage on database DM_CO_CARE_COORD_PERF to role DM_CO_CARE_COORD_DEV_USAGE;
+grant usage on database DM_CO_CARE_COORD_PERF to role DW_UTIL_RW;
+grant usage on database DM_CO_CARE_COORD_PERF to role user_etl;
+
+-- if testing project --
+grant usage on database DM_CO_CARE_COORD_PERF to role DM_CO_CARE_COORD_TEST_RW;
+grant usage on database DM_CO_CARE_COORD_PERF to role USER_DIMAGI_ANALYST;
+-- end if testing project --
+
+use role sysadmin;
+create schema IF NOT EXISTS DL;
+
+use schema DL;
+grant usage on schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_DEV_DL_R;
+grant usage on schema DM_CO_CARE_COORD_PERF.DL to role user_etl;
+use role accountadmin;
+grant select on future tables in schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_DEV_DL_R;
+grant select on future views in schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_DEV_DL_R;
+grant select on future tables in schema DM_CO_CARE_COORD_PERF.DL to role user_etl;
+grant select on future views in schema DM_CO_CARE_COORD_PERF.DL to role user_etl;
+
+-- if testing project --
+use role sysadmin;
+grant usage on schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_TEST_RW;
+use role accountadmin;
+grant create function on schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_TEST_RW;
+grant create stage on schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_TEST_RW;
+grant create task on schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_TEST_RW;
+grant create file format on schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_TEST_RW;
+grant create table on schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_TEST_RW;
+grant create view on schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_TEST_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_TEST_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_CO_CARE_COORD_PERF.DL to role DM_CO_CARE_COORD_TEST_RW;
+-- end if testing project --
+
+use role sysadmin;
+create schema IF NOT EXISTS DM;
+
+use schema DM;
+grant usage on schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_DEV_DM_R;
+grant usage on schema DM_CO_CARE_COORD_PERF.DM to role user_etl;
+use role accountadmin;
+grant usage on future functions in schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_DEV_DM_R;
+grant select on future tables in schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_DEV_DM_R;
+grant select on future views in schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_DEV_DM_R;
+grant select on future tables in schema DM_CO_CARE_COORD_PERF.DM to role user_etl;
+grant select on future views in schema DM_CO_CARE_COORD_PERF.DM to role user_etl;
+
+-- if testing project --
+use role sysadmin;
+grant usage on schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_TEST_RW;
+use role accountadmin;
+grant create function on schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_TEST_RW;
+grant create stage on schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_TEST_RW;
+grant create task on schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_TEST_RW;
+grant create file format on schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_TEST_RW;
+grant create table on schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_TEST_RW;
+grant create view on schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_TEST_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_TEST_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_CO_CARE_COORD_PERF.DM to role DM_CO_CARE_COORD_TEST_RW;
+-- end if testing project --
+
+use role sysadmin;
+create schema IF NOT EXISTS INTEGRATION;
+
+use schema INTEGRATION;
+grant usage on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_DEV_INTEGRATION_R;
+grant usage on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DW_UTIL_RW;
+grant usage on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role user_etl;
+use role accountadmin;
+grant select on future tables in schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_DEV_INTEGRATION_R;
+grant select on future views in schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_DEV_INTEGRATION_R;
+grant select on future tables in schema DM_CO_CARE_COORD_PERF.INTEGRATION to role user_etl;
+grant select on future views in schema DM_CO_CARE_COORD_PERF.INTEGRATION to role user_etl;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DW_UTIL_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DW_UTIL_RW;
+
+-- if testing project --
+use role sysadmin;
+grant usage on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_TEST_RW;
+use role accountadmin;
+grant create function on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_TEST_RW;
+grant create stage on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_TEST_RW;
+grant create task on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_TEST_RW;
+grant create file format on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_TEST_RW;
+grant create table on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_TEST_RW;
+grant create view on schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_TEST_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_TEST_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_CO_CARE_COORD_PERF.INTEGRATION to role DM_CO_CARE_COORD_TEST_RW;
+-- end if testing project --
+
+use role sysadmin;
+create schema IF NOT EXISTS UTIL;
+
+use schema UTIL;
+grant usage on schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_DEV_UTIL_R;
+grant usage on schema DM_CO_CARE_COORD_PERF.UTIL to role DW_UTIL_RW;
+grant usage on schema DM_CO_CARE_COORD_PERF.UTIL to role user_etl;
+use role accountadmin;
+grant select on future tables in schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_DEV_UTIL_R;
+grant select on future views in schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_DEV_UTIL_R;
+grant select on future tables in schema DM_CO_CARE_COORD_PERF.UTIL to role user_etl;
+grant select on future views in schema DM_CO_CARE_COORD_PERF.UTIL to role user_etl;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_CO_CARE_COORD_PERF.UTIL to role DW_UTIL_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_CO_CARE_COORD_PERF.UTIL to role DW_UTIL_RW;
+
+-- if testing project --
+use role sysadmin;
+grant usage on schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_TEST_RW;
+use role accountadmin;
+grant create function on schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_TEST_RW;
+grant create stage on schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_TEST_RW;
+grant create task on schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_TEST_RW;
+grant create file format on schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_TEST_RW;
+grant create table on schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_TEST_RW;
+grant create view on schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_TEST_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_TEST_RW;
+grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_CO_CARE_COORD_PERF.UTIL to role DM_CO_CARE_COORD_TEST_RW;
+-- end if testing project --
+
 
 /* -- in dbt --
 //// setup DL schema ////
 
+use role sysadmin;
 use schema DL;
 
 create or replace view SRC_CASES_RAW(
@@ -523,6 +676,7 @@ SELECT
     EXECUTION_ID
 FROM 
     "DATALAKE_DEV"."ETL_REPLACE_TEST_BHA_DEV"."ACTION_TIMES_RAW_STAGE"
+;    
 
 //// setup DM schema ////
 
@@ -864,6 +1018,10 @@ JSON:id::string FORMID, JSON:server_modified_on::string FORMDATE
     where JSON:archived = 'true'and CASETYPE is not null
 ;
 */
+-- if testing project
+use role user_dbt_test;
+-- if not testing project
+use role sysadmin;
 
 create or replace TABLE CONFIG_CASE_FIELDS (
 	CASE_TYPE VARCHAR(16777216),
@@ -2679,17 +2837,18 @@ create or replace view FORM_FIELD_VALUES_STG(
 
 //// setup UTIL schema ////
 
+use role sysadmin;
 use schema util;
 
 create or replace TABLE SQL_JOB (
-	JOB_ID integer autoincrement not null constraint uniq_id unique enforced,
+	JOB_ID integer autoincrement order not null constraint uniq_id unique enforced,
 	JOB_NAME STRING,
 	JOB_DESC STRING,
     constraint sql_job_pk primary key (job_id) enforced
 );
 
 create or replace TABLE SQL_JOB_STEP (
-	JOB_STEP_ID integer autoincrement not null constraint uniq_id unique enforced,
+	JOB_STEP_ID integer autoincrement order not null constraint uniq_id unique enforced,
     JOB_ID INTEGER,
 	STEP_ORDER INTEGER,
 	STEP_SQL STRING,
@@ -2699,7 +2858,7 @@ create or replace TABLE SQL_JOB_STEP (
 
 -- *********** NEW LOG TABLES
 create or replace TABLE task_log (
-	TASK_ID NUMBER(38,0) NOT NULL autoincrement,
+	TASK_ID NUMBER(38,0) NOT NULL autoincrement order,
 	UUID STRING,
 	TYPE STRING,
 	SUBTYPE STRING,
@@ -2711,7 +2870,7 @@ create or replace TABLE task_log (
 );
 
 create or replace TABLE execution_log (
-	EXECUTION_ID NUMBER(38,0) NOT NULL autoincrement,
+	EXECUTION_ID NUMBER(38,0) NOT NULL autoincrement order,
     TASK_ID NUMBER(38,0),
 	UUID STRING,
 	TYPE STRING,
@@ -2724,7 +2883,7 @@ create or replace TABLE execution_log (
 );
 
 create or replace TABLE message_log (
-	MESSAGE_ID NUMBER(38,0) NOT NULL autoincrement,
+	MESSAGE_ID NUMBER(38,0) NOT NULL autoincrement order,
     TASK_ID NUMBER(38,0),
     EXECUTION_ID NUMBER(38,0),
 	TYPE STRING,
@@ -2737,7 +2896,7 @@ create or replace TABLE message_log (
 
 --changed ******** will need to decide what to do with existing logs
 create or replace TABLE SQL_LOGS (
-	SQL_LOG_ID NUMBER(38,0) NOT NULL autoincrement,
+	SQL_LOG_ID NUMBER(38,0) NOT NULL autoincrement order,
 	TASK_ID NUMBER(38,0), -- change
     EXECUTION_ID NUMBER(38,0), -- change
 	QUERY_ID VARCHAR(16777216),
@@ -2795,42 +2954,42 @@ create or replace TABLE SQL_LOGS (
 use role sysadmin;
 
 --grant usage on database DM_ETL_REPLACE_TEST_BHA_DEV to role user_dimagi;
-grant usage on database DM_ETL_REPLACE_TEST_BHA_DEV to role DW_UTIL_RW;
-grant usage on database DM_ETL_REPLACE_TEST_BHA_DEV to role user_etl;
+//grant usage on database DM_ETL_REPLACE_TEST_BHA_DEV to role DW_UTIL_RW;
+//grant usage on database DM_ETL_REPLACE_TEST_BHA_DEV to role user_etl;
 --grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_dimagi;
 --grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_dimagi;
 --grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_dimagi;
 --grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_dimagi;
-grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
-grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
-grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
-grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
-grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
-grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
+//grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
+//grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
+//grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
+//grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
+//grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
+//grant usage on schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
 
 --grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_dimagi;
 --grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_dimagi;
 --grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_dimagi;
 --grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_dimagi;
-grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
-grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
-grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
-grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
-grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
-grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
+//grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
+//grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
+//grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
+//grant select on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
+//grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
+//grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on all tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
 
 --grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_dimagi;
 --grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_dimagi;
 --grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_dimagi;
 --grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_dimagi;
-grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
-grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
-grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
-grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
-grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
-grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
+//grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
+//grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
+//grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
+//grant select on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
+//grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
+//grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on all views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
 
-grant usage on all procedures in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
+//grant usage on all procedures in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
 
 ////// grant usage with accountadmin role //////
 
@@ -2840,25 +2999,25 @@ use role accountadmin;
 --grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_dimagi;
 --grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_dimagi;
 --grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_dimagi;
-grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
-grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
-grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
-grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
-grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
-grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
+//grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
+//grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
+//grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
+//grant select on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
+//grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
+//grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future tables in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
 
 --grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_dimagi;
 --grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_dimagi;
 --grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_dimagi;
 --grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_dimagi;
-grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
-grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
-grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
-grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
-grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
-grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
+//grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DL to role user_etl;
+//grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.DM to role user_etl;
+//grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role user_etl;
+//grant select on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
+//grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role DW_UTIL_RW;
+//grant DELETE, INSERT, SELECT, TRUNCATE, UPDATE on future views in schema DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION to role DW_UTIL_RW;
 
-grant usage on future procedures in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
+//grant usage on future procedures in schema DM_ETL_REPLACE_TEST_BHA_DEV.UTIL to role user_etl;
 
 //// setup INTEGRATION schema - more ////
 
@@ -3197,14 +3356,16 @@ with qrys as (
 select source, source_type, sql_text from qrys order by ord asc
 ;
 
---needed to add action times to this
 create or replace view generate_all_tables_incr_load(source, source_type, sql_text) as 
 with qrys as (
     select 1 as ord, 'case' source, case_type source_type, sql_text from generate_case_table_incr_load
     union
     select 2 as ord, 'fixture' source, fixture_type source_type, sql_text from generate_fixture_table_incr_load
     union
-    select 3 as ord, 'location' source, null source_type, sql_text from generate_location_table_incr_load
+    --below will recreate location table entirely from location_raw, speial need for bha location redesign projet
+    select 3 as ord, 'location' source, null source_type, sql_text from generate_location_tables
+    --below will do merge changes from location_raw
+    --select 3 as ord, 'location' source, null source_type, sql_text from generate_location_table_incr_load --previous incr view
     union
     select 4 as ord, 'web-user' source, null source_type, sql_text from generate_web_user_table_incr_load
     union
@@ -3230,6 +3391,7 @@ select source, source_type, sql_text from qrys order by ord asc
 
 -- ************ ALL EXISTING STATEMENTS HAVE EDITS, WE WILL WANT TO DELETE FROM SQL_JOB_STEPS AND RELOAD
 
+use role sysadmin;
 use schema util;
 
 insert into sql_job(JOB_NAME, JOB_DESC) values('Raw Data Load', 'Loads all successful records from raw stage to raw and load new fields meta to config');
@@ -3272,10 +3434,13 @@ insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1050,
         'from <<dl_db>>.<<dl_schema>>.FORMS_RAW group by 1);');
 
 insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1100, 'begin transaction;');
+--insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1150, 'TRUNCATE TABLE <<dl_db>>.<<dl_schema>>.locations_raw;');
 insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1200, 'MERGE INTO <<dl_db>>.<<dl_schema>>.locations_raw T USING ' || 
                                                               '(select * from <<dl_db>>.<<dl_schema>>.locations_raw_stage) AS S ' ||
                                                               'ON T.ID = S.ID WHEN MATCHED THEN UPDATE SET T.DOMAIN=S.DOMAIN, T.JSON=S.JSON, T.ID=S.ID, T.SYSTEM_QUERY_TS = S.SYSTEM_QUERY_TS, T.TASK_ID = S.TASK_ID, T.EXECUTION_ID = S.EXECUTION_ID, T.METADATA = S.METADATA, T.METADATA_FILENAME = S.METADATA_FILENAME ' ||
                                                               'WHEN NOT MATCHED THEN INSERT(DOMAIN, JSON, ID, SYSTEM_QUERY_TS, TASK_ID, EXECUTION_ID, METADATA, METADATA_FILENAME) VALUES(S.DOMAIN, S.JSON, S.ID, S.SYSTEM_QUERY_TS, S.TASK_ID, S.EXECUTION_ID, S.METADATA, S.METADATA_FILENAME);');
+// the following step 1250 is only needed if choose to do location recreation from view GENERATE_ALL_TABLES_INCR_LOAD
+insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1250, 'DELETE FROM <<dl_db>>.<<dl_schema>>.locations_raw where task_id <> (select max(task_id) from <<dl_db>>.<<dl_schema>>.locations_raw);');
 insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1300, 'commit;');
 insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1350, 
         'insert into <<dm_db>>.util.message_log (TASK_ID, EXECUTION_ID, TYPE, SUBTYPE, MESSAGE) ' ||
@@ -3381,14 +3546,15 @@ insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($del_jobid, 600, '
 //////                                            //////
 ////// BELOW ARE CALLS to make after initial load //////
 //////                                            //////
+use role sysadmin;
 
 -- Ingest data from s3; for initial loads, all files should be in the same s3 bucket timestamp folder
 -- then you can harcode that folder in the call below in the last parameter (remember to enclose with /)
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'S3_TO_RAW', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'S3_INGEST|', null, 'case|form|location|fixture|web-user|action_times');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'S3_TO_RAW', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'S3_INGEST|', null, 'case|form|location|fixture|web-user|action_times');
 
 
 --move initial load for stage to full tables and populate field info in Integration
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'RAW_DATA_LOAD', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'STAGE_TO_RAW|', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'RAW_DATA_LOAD', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'STAGE_TO_RAW|', null, '');
 
 
 --activate all standard fields; update if some fields need to be omitted
@@ -3411,8 +3577,8 @@ where v.field_value is not null and v.field_value<>'' and (
 ;
 
 -- One time create views and tables
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_CASE_VIEWS', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_CASE_VIEWS;', null, '');
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_CASE_TABLES', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_CASE_TABLES;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_CASE_VIEWS', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_CASE_VIEWS;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_CASE_TABLES', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_CASE_TABLES;', null, '');
 
 -- If data type issues occur, override the data type in the case config so all values make it through
 
@@ -3436,8 +3602,8 @@ where v.field_value is not null and v.field_value<>'' and (
 ;
 
 -- One time create views and tables
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_FIXTURE_VIEWS', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_FIXTURE_VIEWS;', null, '');
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_FIXTURE_TABLES', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_FIXTURE_TABLES;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_FIXTURE_VIEWS', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_FIXTURE_VIEWS;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_FIXTURE_TABLES', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_FIXTURE_TABLES;', null, '');
 
 -- If data type issues occur, override the data type in the fixture config so all values make it through
 
@@ -3461,8 +3627,8 @@ where v.field_value is not null and v.field_value<>'' and (
 ;
 
 -- One time create views and tables
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_LOCATION_VIEWS', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_LOCATION_VIEWS;', null, '');
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_LOCATION_TABLES', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_LOCATION_TABLES;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_LOCATION_VIEWS', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_LOCATION_VIEWS;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_LOCATION_TABLES', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_LOCATION_TABLES;', null, '');
 
 -- If data type issues occur, override the data type in the location config so all values make it through
 
@@ -3489,8 +3655,8 @@ where v.field_value is not null and v.field_value<>'' and (
 ;
 
 -- One time create views and tables
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_WEB_USER_VIEWS', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_WEB_USER_VIEWS;', null, '');
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_WEB_USER_TABLES', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_WEB_USER_TABLES;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_WEB_USER_VIEWS', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_WEB_USER_VIEWS;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_WEB_USER_TABLES', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_WEB_USER_TABLES;', null, '');
 
 // for action times //
 
@@ -3514,13 +3680,13 @@ where v.field_value is not null and v.field_value<>'' and (
 ;
 
 -- One time create views and tables
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_ACTION_TIME_VIEWS', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_ACTION_TIME_VIEWS;', null, '');
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_ACTION_TIME_TABLES', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'SELECT SQL_TEXT FROM DM_ETL_REPLACE_TEST_BHA_DEV.INTEGRATION.GENERATE_ACTION_TIME_TABLES;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_ACTION_TIME_VIEWS', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_ACTION_TIME_VIEWS;', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'GENERATE_ACTION_TIME_TABLES', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'SELECT SQL_TEXT FROM DM_CO_CARE_COORD_PERF.INTEGRATION.GENERATE_ACTION_TIME_TABLES;', null, '');
 
 -- If data type issues occur, override the data type in the location config so all values make it through
 
 -- delete staged data from initial load
-Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'STAGE_DELETE', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'STAGE_DELETE|', null, '');
+Call metadata.procedures.sp_ingest_transform('INITIAL_LOAD', 'STAGE_DELETE', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'STAGE_DELETE|', null, '');
 
 -- make new SQL Job with steps for the config
 -- use the final UPDATE statements from each source type above, adding the dm_db placeholder and escaping quotes
@@ -3538,7 +3704,7 @@ insert into util.sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($up_jobid, 50
 --TASKS
 
 --hourly call; ingest from s3 and incrementally add to dm
-CREATE OR REPLACE TASK DATALAKE_DEV.ETL_REPLACE_TEST_BHA_DEV.S3_INT_TASK
+CREATE OR REPLACE TASK DATALAKE_DEV.CO_CARE_COORDINATION_COMMCARE_PERF.S3_INT_TASK
 	schedule='USING CRON 00 * * * * America/New_York'
 	error_integration=SNS_INT_OBJ
 AS 
@@ -3546,30 +3712,30 @@ DECLARE
     task_result string default null;
     task_exception EXCEPTION (-20003, 'Task had an error');
 BEGIN
-    Call metadata.procedures.sp_ingest_transform('S3_DATA_LOAD', 'task_call_sp_ingest_transform', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'S3_INGEST|STAGE_TO_RAW|INCR_TABLES|STAGE_DELETE|', null, 'case|form|location|fixture|web-user|action_times') into :task_result;
+    Call metadata.procedures_dev.sp_ingest_transform('S3_DATA_LOAD', 'task_call_sp_ingest_transform', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'S3_INGEST|STAGE_TO_RAW|INCR_TABLES|STAGE_DELETE|', null, 'case|form|location|fixture|web-user|action_times') into :task_result;
     IF (task_result ilike '%error%') THEN 
         RAISE task_exception;
     END IF;
 END
 ;
 
-ALTER TASK DATALAKE_DEV.ETL_REPLACE_TEST_BHA_DEV.S3_INT_TASK RESUME;
+ALTER TASK DATALAKE_DEV.CO_CARE_COORDINATION_COMMCARE_PERF.S3_INT_TASK RESUME;
 
 -- once daily recreate call; recreates views and tables, eventually we can add push to commcare as a step
-CREATE OR REPLACE TASK DATALAKE_DEV.ETL_REPLACE_TEST_BHA_DEV.S3_INT_TASK_DAILY
+CREATE OR REPLACE TASK DATALAKE_DEV.CO_CARE_COORDINATION_COMMCARE_PERF.S3_INT_TASK_DAILY
 //    schedule='USING CRON 45 * * * * America/New_York'
-	schedule='USING CRON 00 23 * * * America/New_York'
+	schedule='USING CRON 30 01 * * * America/New_York'
 	error_integration=SNS_INT_OBJ
 AS 
 DECLARE 
     task_result string default null;
     task_exception EXCEPTION (-20003, 'Task had an error');
 BEGIN
-    Call metadata.procedures.sp_ingest_transform('DATA_CONFIG_UPDATE', 'task_call_sp_ingest_transform', 'co-carecoordination-dev', 'DATALAKE_DEV', 'ETL_REPLACE_TEST_BHA_DEV', 'DM_ETL_REPLACE_TEST_BHA_DEV', 'UPDATE_CONFIG|RECREATE_VIEWS|RECREATE_TABLES|', null, '') into :task_result;
+    Call metadata.procedures_dev.sp_ingest_transform('DATA_CONFIG_UPDATE', 'task_call_sp_ingest_transform', 'co-carecoordination-perf', 'DATALAKE_DEV', 'CO_CARE_COORDINATION_COMMCARE_PERF', 'DM_CO_CARE_COORD_PERF', 'UPDATE_CONFIG|RECREATE_VIEWS|RECREATE_TABLES|', null, '') into :task_result;
     IF (task_result ilike '%error%') THEN 
         RAISE task_exception;
     END IF;
 END
 ;
 
-ALTER TASK DATALAKE_DEV.ETL_REPLACE_TEST_BHA_DEV.S3_INT_TASK_DAILY RESUME;
+ALTER TASK DATALAKE_DEV.CO_CARE_COORDINATION_COMMCARE_PERF.S3_INT_TASK_DAILY RESUME;
