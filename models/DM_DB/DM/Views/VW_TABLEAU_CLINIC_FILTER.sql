@@ -25,14 +25,6 @@ tableau_users_fixture as
     select email, 'HQ/' || username as username from dm_table_data_web_users
 ),
 
-
-recent_user as
-    (
-
-        select max(date_opened) max_date, email from dm_table_data_commcare_user group by email
-    ),
-
-
 user_clinic as
     (
         select 
@@ -43,8 +35,7 @@ user_clinic as
             else ccu.commcare_location_ids
         end as location_list 
         
-        from dm_table_data_commcare_user ccu inner join recent_user rc on ccu.email = rc.email and ccu.date_opened = rc.max_date
-        inner join tableau_users_fixture tuf on upper(tuf.email) = upper(ccu.email) left join state_user su on su.case_id = ccu.case_id and su.date_opened = rc.max_date
+        dm_table_data_commcare_user ccu inner join tableau_users_fixture tuf on upper(tuf.id) = upper(ccu.hq_user_id) left join state_user su on su.case_id = ccu.case_id
     ),
 
 flat_list as (
