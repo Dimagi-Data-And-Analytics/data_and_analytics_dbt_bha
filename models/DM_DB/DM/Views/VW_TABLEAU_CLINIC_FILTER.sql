@@ -22,7 +22,7 @@ state_user as (
 tableau_users_fixture as 
 (
 
-    select email, 'HQ/' || username as username from dm_table_data_web_users
+    select id, 'HQ/' || username as username from dm_table_data_web_users
 ),
 
 user_clinic as
@@ -35,7 +35,7 @@ user_clinic as
             else ccu.commcare_location_ids
         end as location_list 
         
-        dm_table_data_commcare_user ccu inner join tableau_users_fixture tuf on upper(tuf.id) = upper(ccu.hq_user_id) left join state_user su on su.case_id = ccu.case_id
+        from dm_table_data_commcare_user ccu inner join tableau_users_fixture tuf on upper(tuf.id) = upper(ccu.hq_user_id) left join state_user su on su.case_id = ccu.case_id
     ),
 
 flat_list as (
