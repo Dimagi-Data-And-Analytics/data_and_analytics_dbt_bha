@@ -1,7 +1,305 @@
 models:
+  - name: VW_ARCHIVED_CASES 
+    columns:
+    - name: CASE_ID
+      data_tests:
+      - not_null
+    - name: ARCHIVED
+      data_tests:
+      - not_null
+      - accepted_values:
+          values: ['TRUE', 'true']
+    - name: CASE_TYPE
+      data_tests:
+      - string_not_empty
+  - name: VW_CASE_COUNTS
+    columns:
+    - name: CASE_TYPE
+      data_tests:
+      - not_null
+    - name: DL_CASE_COUNT
+      data_tests:
+      - string_not_empty
+      - number_not_greater_than_zero
+    - name: DELETE_CASE_COUNT
+      data_tests:
+      - string_not_empty      
+      - number_not_greater_than_zero
+    - name: DM_CASE_COUNT
+      data_tests:
+      - string_not_empty      
+      - number_not_greater_than_zero
+  - name: VW_CLIENT_ALIAS
+    columns:
+    - name: CLIENT_CASE_ID
+      data_tests:
+      - not_null
+  - name: VW_CLIENT_CURRENT_STATUS_UPDATE
+    columns:  
+    - name: CASE_ID
+      data_tests:
+      - not_null
+    - name: FORM_ID
+      data_tests:
+      - not_null
+    - name: CURRENT_STATUS
+      data_tests:
+      - not_null
+  - name: VW_CLIENT_DUPLICATES
+    data_tests:
+      # INDEX_CASE_ID != MATCH_CASE_ID
+      - two_column_value_matching:
+          matching_columns:
+            - INDEX_CASE_ID
+            - MATCH_CASE_ID
+    columns:  
+    - name: INDEX_CASE_ID
+      data_tests:
+      - not_null
+    - name: MATCH_CASE_ID
+      data_tests:
+      - not_null
+    - name: MATCH_TYPE
+      data_tests:
+      - not_null     
+      - accepted_values:
+          values: ['Client Match', 'Alias Match']
+    ## consider doing the following when are able to improve the performnace in VW_CLIENT_DUPLICATES ##
+    # - name: FIRST_NAME_SCORE
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+    # - name: LAST_NAME_SCORE 
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+    # - name: DOB_SCORE
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+    # - name: SSN_SCORE
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+    # - name: FIRST_NAME_SCORE_SOUNDEX
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+    # - name: LAST_NAME_SCORE_SOUNDEX
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+    # - name: FIRST_NAME_SCORE_JAR
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+    # - name: LAST_NAME_SCORE_JAR
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+    # - name: DOB_SCORE_JAR
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+    # - name: SSN_SCORE_JAR
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+  - name: VW_CLIENT_DUPLICATES_INCREMENTAL
+    data_tests:
+      # INDEX_CASE_ID != MATCH_CASE_ID
+      - two_column_value_matching:
+          matching_columns:
+            - INDEX_CASE_ID
+            - MATCH_CASE_ID
+    columns:  
+    - name: INDEX_CASE_ID
+      data_tests:
+      - not_null
+    - name: MATCH_CASE_ID
+      data_tests:
+      - not_null
+    - name: MATCH_TYPE
+      data_tests:
+      - not_null     
+      - accepted_values:
+          values: ['Client Match', 'Alias Match']
+    ## consider doing the following when are able to improve the performnace in VW_CLIENT_DUPLICATES_INCREMENTAL ##          
+    # - name: FIRST_NAME_SCORE
+    #   data_tests:    
+    #   - number_accepted_range:
+    #       min_value: 0
+    #       max_value: 100
+  - name: VW_CLIENT_DUPLICATES_INCREMENTAL_SIMPLE
+    # data_tests:
+    #   INDEX_CASE_ID != MATCH_CASE_ID
+    #   - two_column_value_matching:
+    #       matching_columns:
+    #         - INDEX_CASE_ID
+    #         - MATCH_CASE_ID  
+    columns:  
+    - name: INDEX_CASE_ID
+      data_tests:
+      - not_null
+    ## consider doing the following when are able to improve the performnace in VW_CLIENT_DUPLICATES_INCREMENTAL_SIMPLE ##        
+    ## MATCH_CASE_ID and MATCH_TYPE in VW_CLIENT_DUPLICATES_INCREMENTAL_SIMPLE are causing some slowness issues ##
+    # - name: MATCH_CASE_ID
+    #   data_tests:
+    #   - not_null
+    # - name: MATCH_TYPE
+    #   data_tests:
+    #   - not_null     
+    #  - accepted_values:
+    #      values: ['Alias DOB Match', 'Client Match', 'Alias Match', 'Alias Demo Match']
+    # - name: FIRST_NAME_MATCH
+    #   data_tests:    
+    #   - accepted_values:
+    #       values: [TRUE, FALSE]
+    # - name: LAST_NAME_MATCH 
+    #   data_tests:    
+    #   - accepted_values:
+    #       values: [TRUE, FALSE]
+    # - name: SSN_MATCH 
+    #   data_tests:    
+    #   - accepted_values:
+    #       values: [TRUE, FALSE]
+    # - name: DOB_MATCH 
+    #   data_tests:    
+    #   - accepted_values:
+    #       values: [TRUE, FALSE]
+    # - name: MEDICAID_MATCH 
+    #   data_tests:    
+    #   - accepted_values:
+    #       values: [TRUE, FALSE]
+  - name: VW_CLIENT_POTENTIAL_DUPLICATE_UPDATE 
+    columns:
+    - name: INDEX_CASE_ID
+      data_tests:
+      - not_null
+    - name: CLOSED_FLAG
+      data_tests:
+      - accepted_values:
+         values: ['1']      
+    - name: CLOSED_INDEX
+      data_tests:
+      - not_null
+      - accepted_values:
+         values: [TRUE, FALSE] 
+  - name: VW_CLIENT_POTENTIAL_DUPLICATE_INDEX_UPDATE 
+    columns:
+    - name: MATCH_CASE_ID
+      data_tests:
+      - not_null
+    - name: CLOSED_FLAG
+      data_tests:
+      - accepted_values:
+         values: ['1']      
+    - name: MATCH_CLOSED_FLAG
+      data_tests:
+      - not_null
+      - accepted_values:
+         values: [TRUE, FALSE] 
+  - name: VW_CLINIC_PROVIDER 
+    columns:
+    - name: CLINIC_CASE_ID
+      data_tests:
+      - not_null
+      - unique
+    - name: PROVIDER_CASE_ID
+      data_tests:
+      - relationships:
+         to: source('dm_table_data', 'CASE_PROVIDER')
+         field: case_id
+  - name: VW_EXPLODE_CLINIC_ACCESSIBILITY 
+    columns:
+    - name: CLINIC_CASE_ID
+      data_tests:
+      - not_null
+  - name: VW_EXPLODE_CLINIC_CLINIC_TYPE 
+    columns:
+    - name: CLINIC_CASE_ID
+      data_tests:
+      - not_null
+  - name: VW_EXPLODE_CLINIC_LANGUAGES_SPOKEN 
+    columns:
+    - name: CLINIC_CASE_ID
+      data_tests:
+      - not_null
+  - name: VW_EXPLODE_CLINIC_MENTAL_HEALTH_SERVICES 
+    columns:
+    - name: CLINIC_CASE_ID
+      data_tests:
+      - not_null      
+  - name: VW_EXPLODE_CLINIC_PAYERS_ACCEPTED 
+    columns:
+    - name: CLINIC_CASE_ID
+      data_tests:
+      - not_null    
+  - name: VW_EXPLODE_CLINIC_POPULATION_SERVED 
+    columns:
+    - name: CLINIC_CASE_ID
+      data_tests:
+      - not_null    
+  - name: VW_EXPLODE_CLINIC_PROGRAMS 
+    columns:
+    - name: CLINIC_CASE_ID
+      data_tests:
+      - not_null  
+  - name: VW_EXPLODE_CLINIC_SUBSTANCE_USE_SERVICES 
+    columns:
+    - name: CLINIC_CASE_ID
+      data_tests:
+      - not_null  
   - name: VW_FORM_METADATA
     columns:
     - name: FORM_ID
-      tests:
+      data_tests:
       - unique
       - not_null
+  - name: VW_REFERRAL_CURRENT_STATUS_UPDATE
+    columns:  
+    - name: CASE_ID
+      data_tests:
+      - not_null
+    - name: FORM_ID
+      data_tests:
+      - not_null
+    - name: CURRENT_STATUS
+      data_tests:
+      - not_null
+  - name: VW_SERVICE_CLINIC_PROVIDER_CLIENT
+    columns:  
+    - name: CASE_ID_SERVICE
+      data_tests:
+      - not_null
+    - name: CASE_ID_CLINIC
+      data_tests:
+      - relationships:
+         to: source('dm_table_data', 'CASE_CLINIC')
+         field: case_id
+    - name: CASE_ID_PROVIDER
+      data_tests:
+      - relationships:
+         to: source('dm_table_data', 'CASE_PROVIDER')
+         field: case_id
+    - name: CASE_ID_CLIENT
+      data_tests:
+      - relationships:
+         to: source('dm_table_data', 'CASE_CLIENT')
+         field: case_id
+  - name: VW_TABLEAU_DEDUPE_FILTER
+    columns:  
+    - name: SECURITY_ACCESS
+      data_tests:
+      - accepted_values:
+         values: ['All', 'None'] 

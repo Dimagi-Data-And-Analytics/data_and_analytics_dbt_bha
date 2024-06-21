@@ -3454,6 +3454,8 @@ insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1370, 
                                                               '(select * from <<dl_db>>.<<dl_schema>>.web_users_raw_stage) AS S ' ||
                                                               'ON T.ID = S.ID WHEN MATCHED THEN UPDATE SET T.DOMAIN=S.DOMAIN, T.JSON=S.JSON, T.ID=S.ID, T.SYSTEM_QUERY_TS = S.SYSTEM_QUERY_TS, T.TASK_ID = S.TASK_ID, T.EXECUTION_ID = S.EXECUTION_ID, T.METADATA = S.METADATA, T.METADATA_FILENAME = S.METADATA_FILENAME ' ||
                                                               'WHEN NOT MATCHED THEN INSERT(DOMAIN, JSON, ID, SYSTEM_QUERY_TS, TASK_ID, EXECUTION_ID, METADATA, METADATA_FILENAME) VALUES(S.DOMAIN, S.JSON, S.ID, S.SYSTEM_QUERY_TS, S.TASK_ID, S.EXECUTION_ID, S.METADATA, S.METADATA_FILENAME);');
+// the following step 1375 is only needed if choose to do web_users recreation daily
+insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1375, 'DELETE FROM <<dl_db>>.<<dl_schema>>.web_users_raw where task_id <> (select max(task_id) from <<dl_db>>.<<dl_schema>>.web_users_raw);');
 insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1380, 'commit;');
 insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1382, 
         'insert into <<dm_db>>.util.message_log (TASK_ID, EXECUTION_ID, TYPE, SUBTYPE, MESSAGE) ' ||
