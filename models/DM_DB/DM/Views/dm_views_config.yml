@@ -303,3 +303,14 @@ models:
       data_tests:
       - accepted_values:
          values: ['All', 'None'] 
+  - name: VW_UNIT_LAST_UPDATED_DATE_TIME_RAW
+    columns:  
+    - name: CASE_ID
+      data_tests:
+      - not_null
+    - name: FORM_ID
+      data_tests:
+      - not_null
+    - name: LAST_UPDATED_DATE_TIME_RAW
+      data_tests:
+      - not_null
