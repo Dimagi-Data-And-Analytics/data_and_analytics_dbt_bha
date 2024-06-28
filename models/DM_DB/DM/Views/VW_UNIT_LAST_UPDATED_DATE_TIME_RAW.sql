@@ -12,6 +12,7 @@ dm_table_data_unit as (
         json:form."@name"::string as form_name, -- FORM
         flat_j.path as json_path, 
         json:server_modified_on::datetime as submission_date, 
+        json:archived::string as archived,
         case
         when flat_j.this:update_unit_case:case is not null then
              flat_j.this:update_unit_case:case:"@case_id"::string
@@ -37,6 +38,7 @@ dm_table_data_unit as (
       or flat_j.key = 'save_to_case' 
      )           
     and last_updated_date_time_raw is not null
+    and archived != 'true'
     and case_id not in (select case_id from dm_table_data_unit where closed=true)
 )
 
