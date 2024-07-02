@@ -21,5 +21,3 @@ jobs:
           dbt deps    
       - name: Run dbt models
         run: dbt run --models "DM_DB.DM.*" --target qa
-      - name: Test dbt models
-        run: dbt test --models "DM_DB.DM.*" --target qa

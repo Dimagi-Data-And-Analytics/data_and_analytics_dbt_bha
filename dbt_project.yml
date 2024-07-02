@@ -70,8 +70,6 @@ models:
             secure: true 
           VW_EXPLODE_CLINIC_SUBSTANCE_USE_SERVICES:
             secure: true 
-          VW_EXPLODE_SERVICE_TREATMENT_TYPE:
-            secure: true 
           VW_FORM_METADATA:
             secure: true 
           VW_SERVICE_CLINIC_PROVIDER_CLIENT:
