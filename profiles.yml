@@ -40,7 +40,27 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH      
+      warehouse: COMPUTE_WH  
+    test-perf:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      database: DM_CO_CARE_COORD_PERF
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
+      schema: DM
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      warehouse: COMPUTE_WH  
+    test-train:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      database: DM_CO_CARE_COORD_TRAIN
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
+      schema: DM
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      warehouse: COMPUTE_WH                   
     test:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DM_CO_CARE_COORD_TEST
@@ -50,7 +70,17 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH      
+      warehouse: COMPUTE_WH   
+    test-staging:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      database: DM_CO_CARE_COORD_TEST_STAGING
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
+      schema: DM
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      warehouse: COMPUTE_WH           
     dev-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DATALAKE_DEV
@@ -91,6 +121,26 @@ data_and_analytics_dbt_bha:
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
       warehouse: COMPUTE_WH  
+    test-perf-dl:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      database: DATALAKE_DEV
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
+      schema: CO_CARE_COORDINATION_COMMCARE_PERF
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      warehouse: COMPUTE_WH  
+    test-train-dl:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      database: DATALAKE_DEV
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
+      schema: CO_CARE_COORDINATION_COMMCARE_TRAIN
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      warehouse: COMPUTE_WH              
     test-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       database: DATALAKE_DEV
@@ -100,5 +150,14 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH               
-
+      warehouse: COMPUTE_WH   
+    test-staging-dl:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      database: DATALAKE_DEV
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
+      schema: CO_CARE_COORDINATION_COMMCARE_TEST_STAGING
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      warehouse: COMPUTE_WH                     

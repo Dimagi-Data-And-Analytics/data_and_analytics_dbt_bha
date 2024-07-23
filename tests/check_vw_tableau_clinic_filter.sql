@@ -1,0 +1,1 @@
+select username from {{ ref('VW_TABLEAU_CLINIC_FILTER')}} where username not like 'HQ/%'
