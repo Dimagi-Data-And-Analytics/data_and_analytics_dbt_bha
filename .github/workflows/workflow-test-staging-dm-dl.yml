@@ -1,4 +1,4 @@
-name: job_bha_qa_dm_dm_only
+name: job_bha_test_staging_dm_dl_only
 run-name: manual trigger from GitHub Actions to Snowflake
 on: workflow_dispatch
 env:
@@ -6,9 +6,9 @@ env:
   DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
   DBT_SNOWFLAKE_USER_BHA: ${{ secrets.DBT_SNOWFLAKE_USER_BHA }}
   DBT_SNOWFLAKE_PWD_BHA: ${{ secrets.DBT_SNOWFLAKE_PWD_BHA }}
-  DBT_SNOWFLAKE_ROLE: ${{ secrets.DBT_SNOWFLAKE_ROLE }}   
+  DBT_SNOWFLAKE_ROLE: ${{ secrets.DBT_SNOWFLAKE_ROLE }}    
 jobs:
-  job_bha_qa_dm_dm_only:
+  job_bha_test_staging_dm_dl_only:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -19,5 +19,7 @@ jobs:
         run: |
           pip install dbt-snowflake
           dbt deps    
+      - name: Test dbt models
+        run: dbt test --models "DM_DB.DL.*" --target test-staging
       - name: Run dbt models
-        run: dbt run --models "DM_DB.DM.*" --target qa
+        run: dbt run --models "DM_DB.DL.*" --target test-staging
