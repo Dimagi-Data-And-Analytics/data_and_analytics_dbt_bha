@@ -4,7 +4,7 @@ with integration_table_data_config_web_user as (
 final as (
 select  
     'create or replace table <<dm_db>>.DM.WEB_USER'
-    || '(\n   DOMAIN\n   ,ID\n   ,LAST_UPDATED\n   ,' ||
+    || ' COPY GRANTS (\n   DOMAIN\n   ,ID\n   ,LAST_UPDATED\n   ,' ||
     listagg(ifnull(FIELD_NAME_OVERRIDE, FIELD_ALIAS), '\n   ,') || '\n) as \n' ||
     'select\n   DOMAIN\n   ,ID\n   ,LAST_UPDATED\n   ,' 
     || listagg(ifnull(FIELD_NAME_OVERRIDE, FIELD_ALIAS), '\n   ,') || 

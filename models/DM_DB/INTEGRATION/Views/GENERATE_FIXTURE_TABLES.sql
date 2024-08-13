@@ -4,7 +4,7 @@ with integration_table_data_config_fixture as (
 final as (
 select fixture_type, 
     'create or replace table <<dm_db>>.DM.FIXTURE_' || replace(upper(fixture_type),'-','_') 
-    || '(\n   DOMAIN\n   ,ID\n   ,LAST_UPDATED\n   ,' ||
+    || ' COPY GRANTS (\n   DOMAIN\n   ,ID\n   ,LAST_UPDATED\n   ,' ||
     listagg(ifnull(FIELD_NAME_OVERRIDE, FIELD_ALIAS), '\n   ,') || '\n) as \n' ||
     'select\n   DOMAIN\n   ,ID\n   ,LAST_UPDATED\n   ,' 
     || listagg(ifnull(FIELD_NAME_OVERRIDE, FIELD_ALIAS), '\n   ,') || 
