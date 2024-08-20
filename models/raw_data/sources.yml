@@ -12,6 +12,7 @@ sources:
       {%- elif target.name=="test-train" -%} DM_CO_CARE_COORD_TRAIN
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
+      {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema: 
@@ -32,6 +33,7 @@ sources:
       {%- elif target.name=="test-train" -%} DM_CO_CARE_COORD_TRAIN      
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
+      {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -54,6 +56,7 @@ sources:
       {%- elif target.name=="test-train" -%} DM_CO_CARE_COORD_TRAIN      
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
+      {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -81,6 +84,7 @@ sources:
       {%- elif target.name=="test-train" -%} DM_CO_CARE_COORD_TRAIN      
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
+      {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -103,6 +107,7 @@ sources:
       {%- elif target.name=="test-train" or target.name=="test-train-dl" -%} DATALAKE_DEV
       {%- elif target.name=="test" or target.name=="test-dl" -%} DATALAKE_DEV
       {%- elif target.name=="test-staging" or target.name=="test-staging-dl" -%} DATALAKE_DEV
+      {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DATALAKE_DEV_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema: |
@@ -114,6 +119,7 @@ sources:
       {%- elif target.name=="test-train" or target.name=="test-train-dl" -%} CO_CARE_COORDINATION_COMMCARE_TRAIN
       {%- elif target.name=="test" or target.name=="test-dl" -%} CO_CARE_COORDINATION_COMMCARE_TEST
       {%- elif target.name=="test-staging" or target.name=="test-staging-dl" -%} CO_CARE_COORDINATION_COMMCARE_TEST_STAGING
+      {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} CO_CARE_COORDINATION_COMMCARE_DEV
       {%- else -%} invalid_schema
       {%- endif -%}
     tables:

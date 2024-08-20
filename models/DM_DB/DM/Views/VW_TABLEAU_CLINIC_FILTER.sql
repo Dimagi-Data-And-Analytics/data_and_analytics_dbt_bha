@@ -7,14 +7,18 @@ dm_table_data_commcare_user as (
       select * from  {{ source('dm_table_data', 'CASE_COMMCARE_USER') }}
 ), 
  
- dm_table_data_clinic as (
+dm_table_data_clinic as (
       select * from  {{ source('dm_table_data', 'CASE_CLINIC') }}
+), 
+
+dm_table_data_location as (
+      select * from  {{ source('dm_table_data', 'LOCATION') }}
 ), 
 
 state_user as (
 
     select ccu.case_id,  ccu.email, ccu.date_opened, location_id, location_type_name, location_type_code  
-    from dm_table_data_commcare_user ccu left join location l on ccu.commcare_location_ids = l.id 
+    from dm_table_data_commcare_user ccu left join dm_table_data_location l on ccu.commcare_location_ids = l.id 
     where ccu.statewide_user = TRUE
 
 ), 
@@ -52,4 +56,4 @@ select
 	username,
 --	location_id,
     case_clinic.case_id as clinic_list
-from flat_list inner join case_clinic on flat_list.location_id = case_clinic.owner_id
+from flat_list inner join dm_table_data_clinic case_clinic on flat_list.location_id = case_clinic.owner_id

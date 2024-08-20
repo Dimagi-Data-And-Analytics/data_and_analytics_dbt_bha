@@ -31,6 +31,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 models:
+  +copy_grants: true
   data_and_analytics_dbt_bha:
     DATALAKE_DB:
       DL_SCHEMA:
@@ -46,11 +47,23 @@ models:
         Views:
           VW_ARCHIVED_CASES:
             secure: true 
+          VW_CASE_COUNTS:
+            secure: true 
           VW_CLIENT_ALIAS:
+            secure: true 
+          VW_CLIENT_CURRENT_STATUS_UPDATE:
+            secure: true 
+          VW_CLIENT_DUPLICATES_API_PAYLOAD:
+            secure: true 
+          VW_CLIENT_DUPLICATES_INCREMENTAL_SIMPLE:
             secure: true 
           VW_CLIENT_DUPLICATES:
             secure: true 
           VW_CLIENT_DUPLICATES_INCREMENTAL:
+            secure: true 
+          VW_CLIENT_POTENTIAL_DUPLICATE_INDEX_UPDATE:
+            secure: true 
+          VW_CLIENT_POTENTIAL_DUPLICATE_UPDATE:
             secure: true 
           VW_CLINIC_PROVIDER:
             secure: true 
@@ -72,12 +85,16 @@ models:
             secure: true 
           VW_FORM_METADATA:
             secure: true 
+          VW_REFERRAL_CURRENT_STATUS_UPDATE:
+            secure: true 
           VW_SERVICE_CLINIC_PROVIDER_CLIENT:
             secure: true
           VW_TABLEAU_CLINIC_FILTER:
             secure: true
           VW_TABLEAU_DEDUPE_FILTER:
             secure: true
+          VW_UNIT_LAST_UPDATED_DATE_TIME_RAW:
+            secure: true  
       INTEGRATION:
         +schema: INTEGRATION   
 
