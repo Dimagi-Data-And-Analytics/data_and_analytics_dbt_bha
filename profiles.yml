@@ -181,4 +181,24 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH      
+      warehouse: COMPUTE_WH     
+    sfstaging-bha-location-redesign:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
+      database: DM_CO_CARE_COORD_BHA_LOCATION_REDESIGN
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
+      schema: DM
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      warehouse: COMPUTE_WH 
+    sfstaging-bha-location-redesign-dl:
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
+      database: DATALAKE_DEV
+      password: "{{ env_var('DBT_SNOWFLAKE_PWD') }}"
+      role: user_dbt_test
+      schema: BHA_LOCATION_REDESIGN_1
+      threads: 1
+      type: snowflake
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      warehouse: COMPUTE_WH 

@@ -13,6 +13,7 @@ sources:
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
+      {%- elif target.name=="sfstaging-bha-location-redesign" -%} DM_CO_CARE_COORD_BHA_LOCATION_REDESIGN
       {%- else -%} invalid_database
       {%- endif -%}    
     schema: 
@@ -34,6 +35,7 @@ sources:
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
+      {%- elif target.name=="sfstaging-bha-location-redesign" -%} DM_CO_CARE_COORD_BHA_LOCATION_REDESIGN
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -57,6 +59,7 @@ sources:
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
+      {%- elif target.name=="sfstaging-bha-location-redesign" -%} DM_CO_CARE_COORD_BHA_LOCATION_REDESIGN
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -85,6 +88,7 @@ sources:
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
+      {%- elif target.name=="sfstaging-bha-location-redesign" -%} DM_CO_CARE_COORD_BHA_LOCATION_REDESIGN
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -108,6 +112,7 @@ sources:
       {%- elif target.name=="test" or target.name=="test-dl" -%} DATALAKE_DEV
       {%- elif target.name=="test-staging" or target.name=="test-staging-dl" -%} DATALAKE_DEV
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DATALAKE_DEV_SHARE
+      {%- elif target.name=="sfstaging-bha-location-redesign" or target.name=="sfstaging-bha-location-redesign-dl" -%} DATALAKE_DEV
       {%- else -%} invalid_database
       {%- endif -%}    
     schema: |
@@ -120,6 +125,7 @@ sources:
       {%- elif target.name=="test" or target.name=="test-dl" -%} CO_CARE_COORDINATION_COMMCARE_TEST
       {%- elif target.name=="test-staging" or target.name=="test-staging-dl" -%} CO_CARE_COORDINATION_COMMCARE_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} CO_CARE_COORDINATION_COMMCARE_DEV
+      {%- elif target.name=="sfstaging-bha-location-redesign" or target.name=="sfstaging-bha-location-redesign-dl" -%} BHA_LOCATION_REDESIGN_1
       {%- else -%} invalid_schema
       {%- endif -%}
     tables:

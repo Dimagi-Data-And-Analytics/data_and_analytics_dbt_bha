@@ -42,3 +42,17 @@ BEGIN
         RAISE task_exception;
     END IF;
 END;
+
+-- bha-location-redesign-1
+create or replace task DATALAKE_DEV.BHA_LOCATION_REDESIGN_1.S3_UNLOAD_TASK
+	schedule='USING CRON 15 05 * * * America/New_York'
+	error_integration=SNS_INT_OBJ
+	as DECLARE 
+    task_result string default null;
+    task_exception EXCEPTION (-20003, 'Task had an error');
+BEGIN
+    Call metadata.procedures.sp_data_unload('CLIENT_PAYLOAD_UPDATE', 'task_call_sp_data_unload', 'bha-location-redesign-1', 'DATALAKE_DEV', 'BHA_LOCATION_REDESIGN_1', 'DM_CO_CARE_COORD_BHA_LOCATION_REDESIGN', 'UNLOAD_SF_TO_S3_AWS|', null) into :task_result;
+    IF (task_result ilike '%error%') THEN 
+        RAISE task_exception;
+    END IF;
+END;

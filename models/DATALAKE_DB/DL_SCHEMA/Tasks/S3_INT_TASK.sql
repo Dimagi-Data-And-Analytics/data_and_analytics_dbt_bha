@@ -47,3 +47,19 @@ BEGIN
     END IF;
 END
 ;
+
+-- bha-location-redesign-1
+CREATE OR REPLACE TASK DATALAKE_DEV.BHA_LOCATION_REDESIGN_1.S3_INT_TASK
+	schedule='USING CRON 00 * * * * America/New_York'
+	error_integration=SNS_INT_OBJ
+AS 
+DECLARE 
+    task_result string default null;
+    task_exception EXCEPTION (-20003, 'Task had an error');
+BEGIN
+    Call metadata.procedures.sp_ingest_transform('S3_DATA_LOAD', 'task_call_sp_ingest_transform', 'bha-location-redesign-1', 'DATALAKE_DEV', 'BHA_LOCATION_REDESIGN_1', 'DM_CO_CARE_COORD_BHA_LOCATION_REDESIGN', 'S3_INGEST|STAGE_TO_RAW|INCR_TABLES|STAGE_DELETE|', null, 'case|form|location|fixture|web-user|action_times') into :task_result;
+    IF (task_result ilike '%error%') THEN 
+        RAISE task_exception;
+    END IF;
+END
+;
