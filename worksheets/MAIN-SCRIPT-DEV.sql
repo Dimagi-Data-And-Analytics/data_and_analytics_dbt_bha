@@ -3510,12 +3510,12 @@ insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1692, 
                                                               'WHERE CCF.FIELD_NAME is NULL;');
 insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1693, 'commit;');
 
-insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1700, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.CASES_RAW CLONE  <<dl_db>>.<<dl_schema>>.CASES_RAW;');
-insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1800, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.FIXTURES_RAW CLONE  <<dl_db>>.<<dl_schema>>.FIXTURES_RAW;');
-insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1900, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.FORMS_RAW CLONE  <<dl_db>>.<<dl_schema>>.FORMS_RAW;');
-insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 2000, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.LOCATIONS_RAW CLONE  <<dl_db>>.<<dl_schema>>.LOCATIONS_RAW;');
-insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 2200, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.WEB_USERS_RAW CLONE  <<dl_db>>.<<dl_schema>>.WEB_USERS_RAW;');
-insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 2300, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.ACTION_TIMES_RAW CLONE  <<dl_db>>.<<dl_schema>>.ACTION_TIMES_RAW;');
+insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1700, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.CASES_RAW COPY GRANTS CLONE  <<dl_db>>.<<dl_schema>>.CASES_RAW;');
+insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1800, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.FIXTURES_RAW COPY GRANTS CLONE  <<dl_db>>.<<dl_schema>>.FIXTURES_RAW;');
+insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 1900, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.FORMS_RAW COPY GRANTS CLONE  <<dl_db>>.<<dl_schema>>.FORMS_RAW;');
+insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 2000, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.LOCATIONS_RAW COPY GRANTS CLONE  <<dl_db>>.<<dl_schema>>.LOCATIONS_RAW;');
+insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 2200, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.WEB_USERS_RAW COPY GRANTS CLONE  <<dl_db>>.<<dl_schema>>.WEB_USERS_RAW;');
+insert into sql_job_step(JOB_ID, STEP_ORDER, STEP_SQL) values($raw_jobid, 2300, 'CREATE OR REPLACE TABLE <<dm_db>>.DL.ACTION_TIMES_RAW COPY GRANTS CLONE  <<dl_db>>.<<dl_schema>>.ACTION_TIMES_RAW;');
 
 
 insert into sql_job(JOB_NAME, JOB_DESC) values('Raw Data Stage Delete', 'Delete all rows from raw stage tables that are part of a successful run');
