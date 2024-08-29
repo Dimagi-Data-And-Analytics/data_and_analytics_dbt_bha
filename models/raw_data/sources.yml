@@ -7,12 +7,16 @@ sources:
       {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
       {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
       {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
-      {%- elif target.name=="test-location" -%} DM_BHA_LOCATION_REDESIGN_1
       {%- elif target.name=="test-perf" -%} DM_CO_CARE_COORD_PERF
       {%- elif target.name=="test-train" -%} DM_CO_CARE_COORD_TRAIN
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
+      {%- elif target.name=="sfstaging-qa" or target.name=="sfstaging-qa-dl" -%} DM_CO_CARE_COORD_QA_SHARE
+      {%- elif target.name=="sfstaging-prod" or target.name=="sfstaging-prod-dl" -%} DM_CO_CARE_COORD_PROD_SHARE
+      {%- elif target.name=="sfstaging-test" or target.name=="sfstaging-test-dl" -%} DM_CO_CARE_COORD_TEST_SHARE
+      {%- elif target.name=="sfstaging-test-perf" or target.name=="sfstaging-test-perf-dl" -%} DM_CO_CARE_COORD_PERF_SHARE
+      {%- elif target.name=="sfstaging-test-staging" or target.name=="sfstaging-test-staging-dl" -%} DM_CO_CARE_COORD_TEST_STAGING_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema: 
@@ -28,12 +32,16 @@ sources:
       {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
       {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
       {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
-      {%- elif target.name=="test-location" -%} DM_BHA_LOCATION_REDESIGN_1
       {%- elif target.name=="test-perf" -%} DM_CO_CARE_COORD_PERF
       {%- elif target.name=="test-train" -%} DM_CO_CARE_COORD_TRAIN      
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
+      {%- elif target.name=="sfstaging-qa" or target.name=="sfstaging-qa-dl" -%} DM_CO_CARE_COORD_QA_SHARE
+      {%- elif target.name=="sfstaging-prod" or target.name=="sfstaging-prod-dl" -%} DM_CO_CARE_COORD_PROD_SHARE
+      {%- elif target.name=="sfstaging-test" or target.name=="sfstaging-test-dl" -%} DM_CO_CARE_COORD_TEST_SHARE
+      {%- elif target.name=="sfstaging-test-perf" or target.name=="sfstaging-test-perf-dl" -%} DM_CO_CARE_COORD_PERF_SHARE
+      {%- elif target.name=="sfstaging-test-staging" or target.name=="sfstaging-test-staging-dl" -%} DM_CO_CARE_COORD_TEST_STAGING_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -51,12 +59,16 @@ sources:
       {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
       {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
       {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
-      {%- elif target.name=="test-location" -%} DM_BHA_LOCATION_REDESIGN_1
       {%- elif target.name=="test-perf" -%} DM_CO_CARE_COORD_PERF
       {%- elif target.name=="test-train" -%} DM_CO_CARE_COORD_TRAIN      
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
+      {%- elif target.name=="sfstaging-qa" or target.name=="sfstaging-qa-dl" -%} DM_CO_CARE_COORD_QA_SHARE
+      {%- elif target.name=="sfstaging-prod" or target.name=="sfstaging-prod-dl" -%} DM_CO_CARE_COORD_PROD_SHARE
+      {%- elif target.name=="sfstaging-test" or target.name=="sfstaging-test-dl" -%} DM_CO_CARE_COORD_TEST_SHARE
+      {%- elif target.name=="sfstaging-test-perf" or target.name=="sfstaging-test-perf-dl" -%} DM_CO_CARE_COORD_PERF_SHARE
+      {%- elif target.name=="sfstaging-test-staging" or target.name=="sfstaging-test-staging-dl" -%} DM_CO_CARE_COORD_TEST_STAGING_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -79,12 +91,16 @@ sources:
       {%- if target.name=="dev" -%} DM_CO_CARE_COORD_DEV
       {%- elif target.name=="qa" -%} DM_CO_CARE_COORD_QA
       {%- elif target.name=="prod" -%} DM_CO_CARE_COORD_PROD
-      {%- elif target.name=="test-location" -%} DM_BHA_LOCATION_REDESIGN_1
       {%- elif target.name=="test-perf" -%} DM_CO_CARE_COORD_PERF
       {%- elif target.name=="test-train" -%} DM_CO_CARE_COORD_TRAIN      
       {%- elif target.name=="test" -%} DM_CO_CARE_COORD_TEST
       {%- elif target.name=="test-staging" -%} DM_CO_CARE_COORD_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DM_CO_CARE_COORD_DEV_SHARE
+      {%- elif target.name=="sfstaging-qa" or target.name=="sfstaging-qa-dl" -%} DM_CO_CARE_COORD_QA_SHARE
+      {%- elif target.name=="sfstaging-prod" or target.name=="sfstaging-prod-dl" -%} DM_CO_CARE_COORD_PROD_SHARE
+      {%- elif target.name=="sfstaging-test" or target.name=="sfstaging-test-dl" -%} DM_CO_CARE_COORD_TEST_SHARE
+      {%- elif target.name=="sfstaging-test-perf" or target.name=="sfstaging-test-perf-dl" -%} DM_CO_CARE_COORD_PERF_SHARE
+      {%- elif target.name=="sfstaging-test-staging" or target.name=="sfstaging-test-staging-dl" -%} DM_CO_CARE_COORD_TEST_STAGING_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema:
@@ -102,24 +118,32 @@ sources:
       {%- if target.name=="dev" or target.name=="dev-dl" -%} DATALAKE_DEV
       {%- elif target.name=="qa" or target.name=="qa-dl" -%} DATALAKE_QA
       {%- elif target.name=="prod" or target.name=="prod-dl" -%} DATALAKE_PROD
-      {%- elif target.name=="test-location" or target.name=="test-location-dl" -%} DATALAKE_DEV
       {%- elif target.name=="test-perf" or target.name=="test-perf-dl" -%} DATALAKE_DEV
       {%- elif target.name=="test-train" or target.name=="test-train-dl" -%} DATALAKE_DEV
       {%- elif target.name=="test" or target.name=="test-dl" -%} DATALAKE_DEV
       {%- elif target.name=="test-staging" or target.name=="test-staging-dl" -%} DATALAKE_DEV
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} DATALAKE_DEV_SHARE
+      {%- elif target.name=="sfstaging-qa" or target.name=="sfstaging-qa-dl" -%} DATALAKE_QA_SHARE
+      {%- elif target.name=="sfstaging-prod" or target.name=="sfstaging-prod-dl" -%} DATALAKE_PROD_SHARE
+      {%- elif target.name=="sfstaging-test" or target.name=="sfstaging-test-dl" -%} DATALAKE_DEV_SHARE
+      {%- elif target.name=="sfstaging-test-perf" or target.name=="sfstaging-test-perf-dl" -%} DATALAKE_DEV_SHARE
+      {%- elif target.name=="sfstaging-test-staging" or target.name=="sfstaging-test-staging-dl" -%} DATALAKE_DEV_SHARE
       {%- else -%} invalid_database
       {%- endif -%}    
     schema: |
       {%- if target.name=="dev" or target.name=="dev-dl" -%} CO_CARE_COORDINATION_COMMCARE_DEV
       {%- elif target.name=="qa" or target.name=="qa-dl" -%} CO_CARE_COORDINATION_COMMCARE_UAT
       {%- elif target.name=="prod" or target.name=="prod-dl" -%} CO_CARE_COORDINATION_COMMCARE_PROD
-      {%- elif target.name=="test-location" or target.name=="test-location-dl" -%} BHA_LOCATION_REDESIGN_1
       {%- elif target.name=="test-perf" or target.name=="test-perf-dl" -%} CO_CARE_COORDINATION_COMMCARE_PERF
       {%- elif target.name=="test-train" or target.name=="test-train-dl" -%} CO_CARE_COORDINATION_COMMCARE_TRAIN
       {%- elif target.name=="test" or target.name=="test-dl" -%} CO_CARE_COORDINATION_COMMCARE_TEST
       {%- elif target.name=="test-staging" or target.name=="test-staging-dl" -%} CO_CARE_COORDINATION_COMMCARE_TEST_STAGING
       {%- elif target.name=="sfstaging-dev" or target.name=="sfstaging-dev-dl" -%} CO_CARE_COORDINATION_COMMCARE_DEV
+      {%- elif target.name=="sfstaging-qa" or target.name=="sfstaging-qa-dl" -%} CO_CARE_COORDINATION_COMMCARE_UAT
+      {%- elif target.name=="sfstaging-prod" or target.name=="sfstaging-prod-dl" -%} CO_CARE_COORDINATION_COMMCARE_PROD
+      {%- elif target.name=="sfstaging-test" or target.name=="sfstaging-test-dl" -%} CO_CARE_COORDINATION_COMMCARE_TEST
+      {%- elif target.name=="sfstaging-test-perf" or target.name=="sfstaging-test-perf-dl" -%} CO_CARE_COORDINATION_COMMCARE_PERF
+      {%- elif target.name=="sfstaging-test-staging" or target.name=="sfstaging-test-staging-dl" -%} CO_CARE_COORDINATION_COMMCARE_TEST_STAGING
       {%- else -%} invalid_schema
       {%- endif -%}
     tables:
