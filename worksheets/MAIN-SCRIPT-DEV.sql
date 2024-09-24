@@ -20,6 +20,7 @@ grant usage on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role da
 grant create function on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
 grant create stage on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
 grant create task on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
+grant monitor on future tasks in schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF  to role datalake_test_rw;
 grant create file format on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
 grant create table on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
 grant create view on schema datalake_dev.CO_CARE_COORDINATION_COMMCARE_PERF to role datalake_test_rw;
