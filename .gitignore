@@ -5,3 +5,4 @@ seeds/
 snapshots/
 logs/
 .DS_Store
+*.bak
