@@ -340,7 +340,7 @@ models:
          values: ['closed']
   - name: VW_BED_UPDATES
     columns: 
-      - name: CASE_ID
+      - name: CLINIC_CASE_ID
         data_tests:
         - not_null
   - name: VW_FORM_TIMING
