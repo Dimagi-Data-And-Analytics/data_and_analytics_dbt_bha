@@ -4,7 +4,7 @@ with integration_table_data_config_location as (
 final as (
 select  
     'create or replace table <<dm_db>>.DM.LOCATION'
-    || ' COPY GRANTS (\n   DOMAIN\n   ,ID\n   ,LAST_UPDATED\n   ,' ||
+    || ' CHANGE_TRACKING = TRUE COPY GRANTS (\n   DOMAIN\n   ,ID\n   ,LAST_UPDATED\n   ,' ||
     listagg(ifnull(FIELD_NAME_OVERRIDE, FIELD_ALIAS), '\n   ,') || '\n) as \n' ||
     'select\n   DOMAIN\n   ,ID\n   ,LAST_UPDATED\n   ,' 
     || listagg(ifnull(FIELD_NAME_OVERRIDE, FIELD_ALIAS), '\n   ,') || 
