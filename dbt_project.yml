@@ -45,7 +45,13 @@ models:
           - "{{ create_decimal_to_ts() }}"       
           - "{{ create_phone_display() }}"       
         Views:
+          VW_ACCEPTS_COMMCARE_REFERRAL:
+            secure: true
+          VW_ACTIVE_USERS:
+            secure: true 
           VW_ARCHIVED_CASES:
+            secure: true
+          VW_BED_UPDATES:
             secure: true 
           VW_CASE_COUNTS:
             secure: true 
@@ -64,7 +70,9 @@ models:
           VW_CLIENT_POTENTIAL_DUPLICATE_INDEX_UPDATE:
             secure: true 
           VW_CLIENT_POTENTIAL_DUPLICATE_UPDATE:
-            secure: true 
+            secure: true
+          VW_CLIENT_STALE_CLOSE:
+            secure: true  
           VW_CLINIC_PROVIDER:
             secure: true 
           VW_EXPLODE_CLINIC_ACCESSIBILITY:
@@ -84,8 +92,14 @@ models:
           VW_EXPLODE_CLINIC_SUBSTANCE_USE_SERVICES:
             secure: true 
           VW_FORM_METADATA:
-            secure: true 
+            secure: true
+          VW_FORM_TIMING:
+            secure: true
+          VW_ONBOARDED_FACILITIES:
+            secure: true  
           VW_REFERRAL_CURRENT_STATUS_UPDATE:
+            secure: true 
+          VW_REFERRAL_QUANTITIES:
             secure: true 
           VW_SERVICE_CLINIC_PROVIDER_CLIENT:
             secure: true
