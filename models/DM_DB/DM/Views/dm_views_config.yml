@@ -358,3 +358,25 @@ models:
       - name: REFERRAL_CASE_ID
         data_tests:
         - not_null
+  - name: VW_ADMIT_TIME
+    columns: 
+      - name: TIME_START_FORM
+        data_tests:
+        - not_null
+      - name: TIME_END_FORM
+        data_tests:
+        - not_null
+      - name: RECEIVED_ON
+        data_tests:
+        - not_null
+  - name: VW_BED_UPDATE_TIME
+    columns: 
+      - name: TIME_START_FORM
+        data_tests:
+        - not_null
+      - name: TIME_END_FORM
+        data_tests:
+        - not_null
+      - name: RECEIVED_ON
+        data_tests:
+        - not_null

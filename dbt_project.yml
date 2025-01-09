@@ -108,7 +108,11 @@ models:
           VW_TABLEAU_DEDUPE_FILTER:
             secure: true
           VW_UNIT_LAST_UPDATED_DATE_TIME_RAW:
-            secure: true  
+            secure: true 
+          VW_ADMIT_TIME:
+            secure: true
+          VW_BED_UPDATE_TIME:
+            secure: true
       INTEGRATION:
         +schema: INTEGRATION   
 
