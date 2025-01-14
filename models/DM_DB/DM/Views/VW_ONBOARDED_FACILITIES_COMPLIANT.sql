@@ -97,16 +97,20 @@ inpatient_clinics_w_provisioned_users as (
         last_updated_from_ts >= date('2024-05-01') -- PROD data real capture start
     group by provider_name, clinic_name, compliance_month
     order by provider_name, clinic_name, compliance_month desc
+),
+total_clinics as (
+     select count(1) as total_clinics from inpatient_clinics_w_provisioned_users
 )
 select 
     compliance_month,
     count(clinic_name) as total_clinics_in_compliance,
-    (
-        select count(1) from inpatient_clinics_w_provisioned_users
-    ) as total_clinics,
-    total_clinics_in_compliance / total_clinics * 100 as percent_clinics_in_compliance
-from monthly_compliance_by_clinic
+    -- (
+    --     select count(1) from inpatient_clinics_w_provisioned_users
+    -- ) as total_clinics,
+    total_clinics_in_compliance / (tc.total_clinics)  * 100 as percent_clinics_in_compliance
+from monthly_compliance_by_clinic, 
+    (select * from total_clinics) as tc
 where
     compliance_rate = 100
-group by compliance_month
+group by compliance_month, total_clinics
 order by compliance_month desc
