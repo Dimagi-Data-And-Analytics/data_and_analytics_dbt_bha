@@ -82,13 +82,13 @@ inpatient_clinics as (
     order by provider_name, clinic_name, compliance_month desc
 ),
 total_clinics as (
-     select count(1) as total_clinics from inpatient_clinics_w_provisioned_users
+     select count(1) as total_clinics from inpatient_clinics
 )
 select 
     compliance_month,
     count(clinic_name) as total_clinics_in_compliance,
     -- (
-    --     select count(1) from inpatient_clinics_w_provisioned_users
+    --     select count(1) from inpatient_clinics
     -- ) as total_clinics,
     total_clinics_in_compliance / (tc.total_clinics)  * 100 as percent_clinics_in_compliance
 from monthly_compliance_by_clinic, 
