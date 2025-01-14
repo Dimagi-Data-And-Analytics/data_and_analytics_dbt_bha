@@ -380,3 +380,19 @@ models:
       - name: RECEIVED_ON
         data_tests:
         - not_null
+  - name: VW_ONBOARDED_FACILITIES_COMPLIANT
+    columns: 
+      - name: COMPLIANCE_MONTH
+        data_tests:
+        - not_null
+      - name: TOTAL_CLINICS
+        data_tests:
+        - not_null
+  - name: VW_FACILITIES_COMPLIANT
+    columns: 
+      - name: COMPLIANCE_MONTH
+        data_tests:
+        - not_null
+      - name: TOTAL_CLINICS
+        data_tests:
+        - not_null
