@@ -30,6 +30,7 @@ select
     F.time_start_form,
     F.time_end_form,
     F.received_on,
+    F.form_id
     from {{ ref('VW_FORM_METADATA') }} as F
 join changed_forms
 on changed_forms.form_id = F.form_id
