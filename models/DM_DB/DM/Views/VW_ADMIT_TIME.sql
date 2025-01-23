@@ -29,7 +29,8 @@ admitted_service_forms as (
 select  
     F.time_start_form,
     F.time_end_form,
-    F.received_on
+    F.received_on,
+    F.form_id
 from {{ ref('VW_FORM_METADATA') }}  as F 
 join admitted_service_forms
     on admitted_service_forms.form_id = F.form_id
