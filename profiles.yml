@@ -10,7 +10,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa      
     qa:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -21,7 +21,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     prod:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -32,7 +32,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
-      warehouse: COMPUTE_WH   
+      warehouse: DBT_WH   
       authenticator: username_password_mfa            
     test-location:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -43,7 +43,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH  
+      warehouse: DBT_WH  
       authenticator: username_password_mfa         
     test-perf:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -54,7 +54,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH  
+      warehouse: DBT_WH  
       authenticator: username_password_mfa         
     test-train:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -65,7 +65,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH      
+      warehouse: DBT_WH      
       authenticator: username_password_mfa                      
     test:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -76,7 +76,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH   
+      warehouse: DBT_WH   
       authenticator: username_password_mfa         
     test-staging:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -87,7 +87,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH   
+      warehouse: DBT_WH   
       authenticator: username_password_mfa                 
     dev-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -98,7 +98,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     qa-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -109,7 +109,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
-      warehouse: COMPUTE_WH   
+      warehouse: DBT_WH   
       authenticator: username_password_mfa         
     prod-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -120,7 +120,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER_BHA') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa    
     test-location-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -131,7 +131,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH  
+      warehouse: DBT_WH  
       authenticator: username_password_mfa         
     test-perf-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -142,7 +142,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH  
+      warehouse: DBT_WH  
       authenticator: username_password_mfa      
     test-train-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -153,7 +153,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH    
+      warehouse: DBT_WH    
       authenticator: username_password_mfa                   
     test-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -164,7 +164,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH   
+      warehouse: DBT_WH   
       authenticator: username_password_mfa         
     test-staging-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
@@ -175,7 +175,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH   
+      warehouse: DBT_WH   
       authenticator: username_password_mfa         
     ## staging below
     sfstaging-dev:
@@ -187,7 +187,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     sfstaging-dev-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -198,7 +198,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH      
+      warehouse: DBT_WH      
       authenticator: username_password_mfa         
     sfstaging-qa:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -209,7 +209,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     sfstaging-qa-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -220,7 +220,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     sfstaging-prod:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -231,7 +231,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     sfstaging-prod-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -242,7 +242,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     sfstaging-test-perf:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -253,7 +253,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     sfstaging-test-perf-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -264,7 +264,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH           
+      warehouse: DBT_WH           
       authenticator: username_password_mfa         
     sfstaging-test:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -275,7 +275,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     sfstaging-test-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -286,7 +286,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     sfstaging-test-staging:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -297,7 +297,7 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH
+      warehouse: DBT_WH
       authenticator: username_password_mfa         
     sfstaging-test-staging-dl:
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT_STAGING') }}"
@@ -308,5 +308,5 @@ data_and_analytics_dbt_bha:
       threads: 1
       type: snowflake
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      warehouse: COMPUTE_WH 
+      warehouse: DBT_WH 
       authenticator: username_password_mfa         

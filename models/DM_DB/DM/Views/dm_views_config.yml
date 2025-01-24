@@ -314,3 +314,79 @@ models:
     - name: LAST_UPDATED_DATE_TIME_RAW
       data_tests:
       - not_null
+  - name: VW_ACTIVE_USERS
+    columns:  
+    - name: FORM_ID
+      data_tests:
+      - not_null
+    - name: FORM_NAME
+      data_tests:
+      - accepted_values:
+         values: ['Create Profile and Refer', 'Add Additional Referrals', 'Outgoing Referral Details', 'Respond to Referral Request'
+          ,'Update Bed Availability', 'Update Bed Availability - Mobile']
+  - name: VW_ACCEPTS_COMMCARE_REFERRAL
+    columns: 
+    - name: CASE_ID
+      data_tests:
+      - not_null
+  - name: VW_CLIENT_STALE_CLOSE
+    columns: 
+    - name: CASE_ID
+      data_tests:
+      - not_null
+    - name: CURRENT_STATUS
+      data_tests:
+      - accepted_values: 
+         values: ['closed']
+  - name: VW_BED_UPDATES
+    columns: 
+      - name: CLINIC_CASE_ID
+        data_tests:
+        - not_null
+  - name: VW_FORM_TIMING
+    columns: 
+      - name: FORM_ID
+        data_tests:
+        - not_null
+  - name: VW_ONBOARDED_FACILITIES
+    columns: 
+      - name: CASE_ID
+        data_tests:
+        - not_null
+  - name: VW_REFERRAL_QUANTITIES
+    columns: 
+      - name: REFERRAL_CASE_ID
+        data_tests:
+        - not_null
+  - name: VW_ADMIT_TIME
+    columns: 
+      - name: TIME_START_FORM
+        data_tests:
+        - not_null
+      - name: TIME_END_FORM
+        data_tests:
+        - not_null
+      - name: RECEIVED_ON
+        data_tests:
+        - not_null
+  - name: VW_BED_UPDATE_TIME
+    columns: 
+      - name: TIME_START_FORM
+        data_tests:
+        - not_null
+      - name: TIME_END_FORM
+        data_tests:
+        - not_null
+      - name: RECEIVED_ON
+        data_tests:
+        - not_null
+  - name: VW_ONBOARDED_FACILITIES_COMPLIANT
+    columns: 
+      - name: COMPLIANCE_MONTH
+        data_tests:
+        - not_null
+  - name: VW_FACILITIES_COMPLIANT
+    columns: 
+      - name: COMPLIANCE_MONTH
+        data_tests:
+        - not_null
