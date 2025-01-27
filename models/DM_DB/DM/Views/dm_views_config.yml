@@ -397,7 +397,7 @@ models:
       - name: COMPLIANCE_MONTH
         data_tests:
         - not_null
-  - name: VW_FACILITES_COMPLIANT
+  - name: VW_FACILITIES_COMPLIANT
     columns: 
       - name: COMPLIANCE_MONTH
         data_tests:

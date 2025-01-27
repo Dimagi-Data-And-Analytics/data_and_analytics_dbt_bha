@@ -113,7 +113,7 @@ models:
             secure: true
           VW_BED_UPDATE_TIME:
             secure: true
-          VW_FACILITES_COMPLIANT:
+          VW_FACILITIES_COMPLIANT:
             secure: true
           VW_ONBOARDED_FACILITIES_COMPLIANT:
             secure: true
