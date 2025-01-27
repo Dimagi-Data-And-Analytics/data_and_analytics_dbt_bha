@@ -329,6 +329,10 @@ models:
     - name: CASE_ID
       data_tests:
       - not_null
+    - name: ACCEPTS_COMMCARE_REFERRALS
+      data_tests:
+      - accepted_values:
+         values: ['yes', 'no']
   - name: VW_CLIENT_STALE_CLOSE
     columns: 
     - name: CASE_ID
@@ -363,17 +367,25 @@ models:
       - name: TIME_START_FORM
         data_tests:
         - not_null
+        - date_less_than_end_date:
+            end_date: TIME_END_FORM
       - name: TIME_END_FORM
         data_tests:
         - not_null
       - name: RECEIVED_ON
         data_tests:
         - not_null
+        - date_greater_than_given_date:
+            given_date: '2024-06-16'
   - name: VW_BED_UPDATE_TIME
     columns: 
       - name: TIME_START_FORM
         data_tests:
         - not_null
+        data_tests:
+        - not_null
+        - date_less_than_end_date:
+            end_date: TIME_END_FORM
       - name: TIME_END_FORM
         data_tests:
         - not_null
@@ -390,3 +402,5 @@ models:
       - name: COMPLIANCE_MONTH
         data_tests:
         - not_null
+        - date_greater_than_given_date:
+            given_date: '2024-05-01'
